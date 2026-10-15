@@ -1,30 +1,64 @@
-# Heryzon Vozzi
+# Vozzi
 
-Site institucional da Heryzon para a Vozzi, agente de voz com inteligência
-artificial para atendimento hospitalar.
+Site institucional da Heryzon apresentando a Vozzi, agente de voz com IA para atendimento hospitalar.
 
-## Estrutura
+## Stack
 
-- `app/`: página principal com problema, solução e demonstração em áudio.
-- `app/globals.css`: design system aplicado em CSS.
-- `public/audio/vozzi-demo.mp3`: MP3 usado na demonstração do protótipo.
-- `.openai/hosting.json`: vínculo do projeto com Sites.
-- `tests/rendered-html.test.mjs`: teste de renderização da Home.
+- **Framework:** Vinext (Vite + React Server Components)
+- **Frontend:** React 19, TypeScript
+- **Estilo:** Tailwind CSS 4
+- **Runtime:** Node.js 22.13+
+- **Deploy:** Cloudflare Workers
 
-## Desenvolvimento
-
-O projeto requer Node.js 22.13 ou superior. Com `nvm`, execute `nvm use` antes
-de instalar as dependências ou iniciar o servidor.
+## Rodando localmente
 
 ```bash
+# Com nvm instalado, ativa a versão correta do Node
 nvm use
+
+# Instala dependências
 npm install
+
+# Inicia servidor de desenvolvimento
 npm run dev
+
+# Build de produção
 npm run build
-npm test
+
+# Lint
+npm run lint
 ```
 
-## Conteúdo pendente
+O servidor de desenvolvimento roda em `http://localhost:5173`.
 
-O áudio final da Vozzi pode substituir `public/audio/vozzi-demo.mp3` mantendo o
-mesmo caminho público: `/audio/vozzi-demo.mp3`.
+## Estrutura do projeto
+
+```
+app/
+├── page.tsx           # Página principal (hero, problema, solução, demo, contato)
+├── ui.tsx             # Componentes de UI (header, footer, botões, waveform)
+├── contact-form.tsx   # Formulário de contato (abre mailto)
+├── contact-info.ts    # Email de contato
+├── layout.tsx         # Layout raiz com metadata
+└── globals.css        # Estilos globais e design system
+
+public/
+├── audio/
+│   └── vozzi-demo.mp3 # Demonstração em áudio da Vozzi
+└── favicon.svg
+
+worker/
+└── index.ts           # Worker Cloudflare (otimização de imagens e headers de segurança)
+
+scripts/
+└── assert-node-version.mjs  # Valida versão do Node antes de build/dev
+```
+
+## Funcionalidades
+
+- Apresentação do problema de atendimento telefônico na saúde
+- Demonstração da solução Vozzi em formato de áudio
+- Formulário de contato integrado com mailto
+- Design responsivo com navegação mobile
+- Player de áudio customizado
+- Headers de segurança configurados no worker
