@@ -355,25 +355,6 @@ summary {
   accent-color: var(--accent);
 }
 
-.signal-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 24px;
-}
-
-.signal-row span {
-  min-height: 44px;
-  display: grid;
-  align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 6px;
-  padding: 8px;
-  color: rgba(255, 255, 255, 0.74);
-  font-size: 12px;
-  font-weight: 700;
-}
-
 .problem-section,
 .solution-section,
 .mvp-section,
@@ -857,6 +838,7 @@ summary {
 
 .solution-benefits-label {
   margin-bottom: 24px;
+  font-size: 18px;
 }
 
 @media (max-width: 980px) {
@@ -988,6 +970,10 @@ summary {
 
   .flow {
     grid-template-columns: 1fr;
+  }
+
+  .solution-benefits-label {
+    font-size: 16px;
   }
 
   .footer-bottom {
