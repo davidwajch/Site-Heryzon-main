@@ -42,9 +42,11 @@ $body .= "Mensagem:\n{$message}\n";
 
 $headers = "From: Site Heryzon <contato@heryzon.com.br>\r\n";
 $headers .= "Reply-To: {$cleanEmail}\r\n";
+$headers .= "MIME-Version: 1.0\r\n";
 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-$sent = @mail($to, $subject, $body, $headers);
+// Envelope sender (-f): alinha Return-Path/SPF e melhora a entrega.
+$sent = @mail($to, $subject, $body, $headers, '-fcontato@heryzon.com.br');
 
 if ($sent) {
     echo json_encode(['ok' => true]);
