@@ -764,6 +764,15 @@ summary {
   font-weight: 600;
 }
 
+/* Campo honeypot: invisível para humanos, isca para bots. */
+.form-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .form-field input::placeholder,
 .form-field textarea::placeholder {
   color: var(--slate-500);

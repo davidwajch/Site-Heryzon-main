@@ -4,7 +4,8 @@ const WAVEFORM_BARS = [
   28, 40, 72, 86, 52,
 ];
 
-const CONTACT_EMAIL = "vozzicontato@gmail.com";
+// Endpoint PHP que envia a mensagem no servidor.
+const CONTACT_ENDPOINT = "enviar.php";
 
 // Preenche cada container [data-waveform] com as barras.
 function renderWaveforms() {
@@ -59,38 +60,47 @@ function setupMobileMenu() {
   });
 }
 
-// Monta um e-mail (mailto) com os dados do formulário.
+// Envia a mensagem pelo endpoint, sem o visitante sair da página.
 function setupContactForm() {
   const form = document.getElementById("contact-form");
   const status = document.getElementById("form-status");
   if (!form) return;
 
-  form.addEventListener("submit", (event) => {
+  const button = form.querySelector('button[type="submit"]');
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     if (!form.reportValidity()) return;
 
-    const data = new FormData(form);
-    const name = (data.get("name") || "").toString().trim();
-    const email = (data.get("email") || "").toString().trim();
-    const organization = (data.get("organization") || "").toString().trim();
-    const message = (data.get("message") || "").toString().trim();
+    if (status) status.textContent = "Enviando...";
+    if (button) button.disabled = true;
 
-    const placeholder = "a ser incluido";
-    const subject = `Contato Vozzi - ${name || placeholder}`;
-    const body = [
-      `Nome: ${name || placeholder}`,
-      `Email: ${email || placeholder}`,
-      `Organização: ${organization || placeholder}`,
-      "",
-      "Mensagem:",
-      message || placeholder,
-    ].join("\n");
+    try {
+      const response = await fetch(CONTACT_ENDPOINT, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+      const data = await response.json().catch(() => ({}));
 
-    if (status) status.textContent = "Abrindo email para envio...";
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
+      if (response.ok && data.ok) {
+        form.reset();
+        if (status) {
+          status.textContent =
+            "Mensagem enviada! Em breve entramos em contato.";
+        }
+      } else if (status) {
+        status.textContent =
+          data.error || "Não foi possível enviar. Tente novamente.";
+      }
+    } catch {
+      if (status) {
+        status.textContent = "Erro de conexão. Tente novamente em instantes.";
+      }
+    } finally {
+      if (button) button.disabled = false;
+    }
   });
 }
 
