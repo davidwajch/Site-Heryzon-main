@@ -38,6 +38,18 @@ function setupWaveformPlayback() {
   });
 }
 
+// Garante que apenas um player de áudio toque por vez.
+function setupExclusiveAudio() {
+  const players = document.querySelectorAll("audio");
+  players.forEach((audio) => {
+    audio.addEventListener("play", () => {
+      players.forEach((other) => {
+        if (other !== audio) other.pause();
+      });
+    });
+  });
+}
+
 // Fecha o menu mobile ao clicar em um link.
 function setupMobileMenu() {
   const menu = document.querySelector(".mobile-menu");
@@ -84,5 +96,6 @@ function setupContactForm() {
 
 renderWaveforms();
 setupWaveformPlayback();
+setupExclusiveAudio();
 setupMobileMenu();
 setupContactForm();

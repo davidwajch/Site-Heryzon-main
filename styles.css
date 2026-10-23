@@ -775,27 +775,15 @@ summary {
   margin: 0 0 56px;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 18px;
 }
 
 .flow-step {
-  position: relative;
   padding: 24px 20px;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--slate-50);
-}
-
-.flow-step + .flow-step::before {
-  content: "→";
-  position: absolute;
-  left: -15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--accent);
-  font-size: 18px;
-  font-weight: 700;
 }
 
 .flow-num {
@@ -831,11 +819,7 @@ summary {
 
 @media (max-width: 980px) {
   .flow {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .flow-step + .flow-step::before {
-    display: none;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
