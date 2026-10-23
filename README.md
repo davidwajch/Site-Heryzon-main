@@ -1,30 +1,43 @@
 # Heryzon Vozzi
 
-Site institucional da Heryzon para a Vozzi, agente de voz com inteligência
-artificial para atendimento hospitalar.
+Site institucional estático da Heryzon para a Vozzi — solução de atendimento
+por voz com inteligência artificial (a voz é o Bruno), adaptável a qualquer
+nicho.
 
 ## Estrutura
 
-- `app/`: página principal com problema, solução e demonstração em áudio.
-- `app/globals.css`: design system aplicado em CSS.
-- `public/audio/vozzi-demo.mp3`: MP3 usado na demonstração do protótipo.
-- `.openai/hosting.json`: vínculo do projeto com Sites.
-- `tests/rendered-html.test.mjs`: teste de renderização da Home.
+- `index.html`: página única com hero, problema, solução, demonstração em áudio, investidores e contato.
+- `privacidade.html` / `termos.html` / `cookies.html`: páginas legais (modelo a revisar juridicamente).
+- `styles.css`: estilos e design system do site.
+- `script.js`: waveform (estática e animada ao tocar), menu mobile e envio do formulário por e-mail.
+- `audio/bruno-apresentacao.mp3`: MP3 com a apresentação do Bruno (voz da Vozzi).
+- `favicon.svg`: ícone do site.
 
-## Desenvolvimento
+## Como usar
 
-O projeto requer Node.js 22.13 ou superior. Com `nvm`, execute `nvm use` antes
-de instalar as dependências ou iniciar o servidor.
+É um site 100% estático (HTML, CSS e JavaScript puro) — não precisa de build
+nem de dependências. Basta abrir o `index.html` no navegador (duplo clique).
+
+Para testar servindo por HTTP (recomendado, alguns navegadores restringem
+recursos quando o arquivo é aberto direto do disco), rode um servidor estático
+simples na pasta do projeto. Com Node instalado:
 
 ```bash
-nvm use
-npm install
-npm run dev
-npm run build
-npm test
+npx --yes serve .
 ```
 
-## Conteúdo pendente
+Ou, se tiver Python: `python -m http.server 8000` e acesse
+http://localhost:8000.
 
-O áudio final da Vozzi pode substituir `public/audio/vozzi-demo.mp3` mantendo o
-mesmo caminho público: `/audio/vozzi-demo.mp3`.
+## Publicação
+
+Por ser estático, pode ser hospedado em qualquer serviço de arquivos estáticos
+(GitHub Pages, Netlify, Vercel, Cloudflare Pages, etc.) — basta subir o
+conteúdo da pasta.
+
+## Observações
+
+- O formulário de contato monta um link `mailto:` e abre o aplicativo de e-mail
+  do visitante; ele não envia mensagens por um servidor.
+- O áudio final do Bruno pode substituir `audio/bruno-apresentacao.mp3` mantendo
+  o mesmo caminho.
