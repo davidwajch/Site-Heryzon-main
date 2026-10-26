@@ -27,7 +27,7 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="styles.css?v=2" />
+    <link rel="stylesheet" href="styles.css?v=3" />
   </head>
   <body data-theme="teal">
     <!-- Cabeçalho -->
@@ -147,88 +147,134 @@
             </div>
           </div>
 
-          <ol class="flow" aria-label="Como funciona o atendimento">
-            <li class="flow-step">
-              <span class="flow-num">1</span>
-              <p class="flow-title">A pessoa fala</p>
-              <p class="flow-text">
-                Diz o que precisa com as próprias palavras, sem menus.
-              </p>
-            </li>
-            <li class="flow-step">
-              <span class="flow-num">2</span>
-              <p class="flow-title">Entende a intenção</p>
-              <p class="flow-text">
-                O Bruno identifica o que a pessoa quer resolver.
-              </p>
-            </li>
-            <li class="flow-step">
-              <span class="flow-num">3</span>
-              <p class="flow-title">Coleta as informações</p>
-              <p class="flow-text">Reúne os dados necessários para seguir.</p>
-            </li>
-            <li class="flow-step">
-              <span class="flow-num">4</span>
-              <p class="flow-title">Resolve ou encaminha</p>
-              <p class="flow-text">
-                Conclui na hora ou direciona com todo o contexto.
-              </p>
-            </li>
-            <li class="flow-step">
-              <span class="flow-num">5</span>
-              <p class="flow-title">Dados à vista</p>
-              <p class="flow-text">
-                Todos os dados coletados na conversa ficam visíveis para a sua
-                equipe.
-              </p>
-            </li>
-          </ol>
+          <div class="solution-flow">
+            <div
+              class="flowchart"
+              role="img"
+              aria-label="Fluxo do atendimento com a Vozzi: o cliente liga e fala o que precisa; a triagem entende o motivo e direciona para dúvidas, solicitações ou agendamentos, resolvidos por voz; tudo é registrado automaticamente no sistema. Casos complexos são transferidos para um atendente humano já com o resumo. A Vozzi consulta os documentos e regras da operação."
+            >
+              <svg viewBox="0 0 980 630" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <marker id="av" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L6,3 L0,6 z" fill="#12a0a8" />
+                  </marker>
+                  <marker id="ao" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L6,3 L0,6 z" fill="#c2691f" />
+                  </marker>
+                  <style>
+                    .fc-node { fill: #ffffff; stroke: #dde3e8; stroke-width: 1.5; }
+                    .fc-vbox { fill: #f2fbfb; stroke: #12a0a8; stroke-width: 1.5; }
+                    .fc-diamond { fill: #12a0a8; }
+                    .fc-reg { fill: #dcf1f2; stroke: #12a0a8; stroke-width: 1.5; }
+                    .fc-human { fill: #fff6ef; stroke: #e2924a; stroke-width: 1.5; }
+                    .fc-t { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 15px; fill: #0a0f14; }
+                    .fc-s { font-family: "Manrope", sans-serif; font-size: 12px; fill: #5a6b7b; }
+                    .fc-dt { fill: #ffffff; }
+                    .fc-ds { fill: rgba(255,255,255,0.85); }
+                    .fc-lbl { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 11px; fill: #0e7f8a; letter-spacing: 1px; }
+                    .fc-edge { fill: none; stroke: #12a0a8; stroke-width: 2; }
+                    .fc-exc { fill: none; stroke: #e2924a; stroke-width: 2; }
+                    .fc-dash { fill: none; stroke: #9fb0bd; stroke-width: 1.5; stroke-dasharray: 5 5; }
+                    .fc-olbl { font-family: "Manrope", sans-serif; font-weight: 700; font-size: 11px; fill: #c2691f; }
+                    .fc-cons { font-family: "JetBrains Mono", monospace; font-size: 10px; fill: #9fb0bd; }
+                    .fc-bar { fill: #12a0a8; }
+                  </style>
+                </defs>
 
-          <p class="section-label solution-benefits-label">BENEFÍCIOS</p>
+                <!-- Container Vozzi -->
+                <rect class="fc-vbox" x="190" y="30" width="610" height="460" rx="18" />
+                <text class="fc-lbl" x="212" y="58">VOZZI · IA DE VOZ</text>
 
-          <div class="solution-card-grid">
-            <article class="solution-card">
-              <h3>Atendimento natural</h3>
-              <p>
-                A pessoa simplesmente fala o que precisa, sem depender de menus
-                rígidos.
-              </p>
-            </article>
-            <article class="solution-card">
-              <h3>Intenção identificada</h3>
-              <p>
-                O Bruno entende a necessidade e conduz a conversa a partir desse
-                contexto.
-              </p>
-            </article>
-            <article class="solution-card">
-              <h3>Coleta de informações</h3>
-              <p>
-                Reúne os dados necessários antes de resolver ou encaminhar o
-                atendimento.
-              </p>
-            </article>
-            <article class="solution-card">
-              <h3>Redução de tempo e custo</h3>
-              <p>
-                Fluxos repetitivos deixam de depender integralmente da
-                disponibilidade da equipe humana.
-              </p>
-            </article>
-            <article class="solution-card">
-              <h3>Menos abandono</h3>
-              <p>
-                A jornada fica mais fluida e reduz a chance de a pessoa desistir
-                durante a espera.
-              </p>
-            </article>
-            <article class="solution-card">
-              <h3>Adaptável a qualquer nicho</h3>
-              <p>
-                O atendimento por voz é configurável para o contexto de cada
-                operação, seja qual for o segmento.
-              </p>
-            </article>
+                <!-- Edges -->
+                <path class="fc-edge" d="M158,260 H223" marker-end="url(#av)" />
+                <path class="fc-edge" d="M345,260 H388 V108 H408" marker-end="url(#av)" />
+                <path class="fc-edge" d="M345,260 H408" marker-end="url(#av)" />
+                <path class="fc-edge" d="M345,260 H388 V412 H408" marker-end="url(#av)" />
+                <path class="fc-edge" d="M590,108 H612 V260 H633" marker-end="url(#av)" />
+                <path class="fc-edge" d="M590,260 H633" marker-end="url(#av)" />
+                <path class="fc-edge" d="M590,412 H612 V260 H633" marker-end="url(#av)" />
+                <!-- Exceção: humano -->
+                <path class="fc-exc" d="M285,315 V462 H816" marker-end="url(#ao)" />
+                <text class="fc-olbl" x="300" y="482">
+                  Caso complexo: a Vozzi coleta os dados e transfere
+                </text>
+                <!-- Consulta RAG -->
+                <path class="fc-dash" d="M500,490 V548" />
+                <text class="fc-cons" x="510" y="522">consulta (RAG)</text>
+
+                <!-- Cliente liga -->
+                <rect class="fc-node" x="8" y="215" width="150" height="90" rx="12" />
+                <text class="fc-t" x="26" y="256">Cliente liga</text>
+                <text class="fc-s" x="26" y="276">e fala o que precisa</text>
+
+                <!-- Triagem (diamante) -->
+                <polygon class="fc-diamond" points="285,205 345,260 285,315 225,260" />
+                <text class="fc-t fc-dt" text-anchor="middle" x="285" y="257">Triagem</text>
+                <text class="fc-s fc-ds" text-anchor="middle" x="285" y="274">entende o motivo</text>
+
+                <!-- Dúvidas -->
+                <rect class="fc-node" x="410" y="66" width="180" height="84" rx="12" />
+                <rect class="fc-bar" x="426" y="90" width="3" height="8" />
+                <rect class="fc-bar" x="432" y="82" width="3" height="16" />
+                <rect class="fc-bar" x="438" y="86" width="3" height="12" />
+                <rect class="fc-bar" x="444" y="78" width="3" height="20" />
+                <text class="fc-t" x="426" y="120">Dúvidas</text>
+                <text class="fc-s" x="426" y="138">responde na hora</text>
+
+                <!-- Solicitações -->
+                <rect class="fc-node" x="410" y="218" width="180" height="84" rx="12" />
+                <rect class="fc-bar" x="426" y="242" width="3" height="8" />
+                <rect class="fc-bar" x="432" y="234" width="3" height="16" />
+                <rect class="fc-bar" x="438" y="238" width="3" height="12" />
+                <rect class="fc-bar" x="444" y="230" width="3" height="20" />
+                <text class="fc-t" x="426" y="272">Solicitações</text>
+                <text class="fc-s" x="426" y="290">resolve por voz</text>
+
+                <!-- Agendamentos -->
+                <rect class="fc-node" x="410" y="370" width="180" height="84" rx="12" />
+                <rect class="fc-bar" x="426" y="394" width="3" height="8" />
+                <rect class="fc-bar" x="432" y="386" width="3" height="16" />
+                <rect class="fc-bar" x="438" y="390" width="3" height="12" />
+                <rect class="fc-bar" x="444" y="382" width="3" height="20" />
+                <text class="fc-t" x="426" y="424">Agendamentos</text>
+                <text class="fc-s" x="426" y="442">marca por voz</text>
+
+                <!-- Registro automático -->
+                <rect class="fc-reg" x="633" y="218" width="152" height="84" rx="12" />
+                <text class="fc-t" x="651" y="256" style="font-size:13px">Registro automático</text>
+                <text class="fc-s" x="651" y="274">no sistema, com resumo</text>
+
+                <!-- Atendente humano -->
+                <rect class="fc-human" x="816" y="420" width="156" height="88" rx="12" />
+                <text class="fc-t" x="834" y="452" style="font-size:14px">Atendente humano</text>
+                <text class="fc-s" x="834" y="470">casos complexos,</text>
+                <text class="fc-s" x="834" y="486">já com o resumo</text>
+
+                <!-- Base de conhecimento (RAG) -->
+                <rect class="fc-node" x="360" y="548" width="300" height="64" rx="12" />
+                <text class="fc-t" x="380" y="578" style="font-size:14px">Base de conhecimento</text>
+                <text class="fc-s" x="380" y="596">documentos e regras da operação (RAG)</text>
+              </svg>
+            </div>
+
+            <aside class="whatchanges">
+              <p class="section-label">O QUE MUDA</p>
+              <ul>
+                <li>
+                  <strong>Sem fila</strong> para dúvidas e solicitações, 24h por
+                  dia.
+                </li>
+                <li>
+                  <strong>Humano só nos casos complexos</strong>, e já recebe o
+                  resumo.
+                </li>
+                <li><strong>Tudo registrado</strong>, sem digitação manual.</li>
+                <li>
+                  <strong>Respostas oficiais</strong>, tiradas dos seus
+                  documentos.
+                </li>
+              </ul>
+            </aside>
           </div>
         </div>
       </section>
@@ -327,6 +373,15 @@
               />
             </div>
             <div class="form-field">
+              <label for="interest">Você quer</label>
+              <select id="interest" name="interest" required>
+                <option value="Conhecer a solução">Conhecer a solução</option>
+                <option value="Falar sobre investimento">
+                  Falar sobre investimento
+                </option>
+              </select>
+            </div>
+            <div class="form-field">
               <label for="organization">Organização <span class="field-optional">(opcional)</span></label>
               <input
                 id="organization"
@@ -388,6 +443,6 @@
       </div>
     </footer>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
   </body>
 </html>

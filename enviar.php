@@ -18,8 +18,15 @@ if (!empty($_POST['website'])) {
 
 $name = trim($_POST['name'] ?? '');
 $email = trim($_POST['email'] ?? '');
+$interest = trim($_POST['interest'] ?? '');
 $organization = trim($_POST['organization'] ?? '');
 $message = trim($_POST['message'] ?? '');
+
+// Aceita apenas os interesses previstos; qualquer outro vira "Contato".
+$allowedInterests = ['Conhecer a solução', 'Falar sobre investimento'];
+if (!in_array($interest, $allowedInterests, true)) {
+    $interest = 'Contato';
+}
 
 if ($name === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(422);
@@ -32,10 +39,11 @@ $cleanName = preg_replace('/[\r\n]+/', ' ', $name);
 $cleanEmail = preg_replace('/[\r\n]+/', ' ', $email);
 
 $to = 'contato@heryzon.com.br';
-$subjectText = 'Contato pelo site: ' . $cleanName;
+$subjectText = $interest . ' - ' . $cleanName;
 $subject = '=?UTF-8?B?' . base64_encode($subjectText) . '?=';
 
-$body = "Nome: {$name}\n";
+$body = "Interesse: {$interest}\n";
+$body .= "Nome: {$name}\n";
 $body .= "E-mail: {$email}\n";
 $body .= 'Organização: ' . ($organization !== '' ? $organization : '-') . "\n\n";
 $body .= "Mensagem:\n{$message}\n";
