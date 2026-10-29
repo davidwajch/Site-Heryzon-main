@@ -1,43 +1,48 @@
-# Heryzon Vozzi
+# Heryzon · Vozzi
 
-Site institucional estático da Heryzon para a Vozzi — solução de atendimento
-por voz com inteligência artificial (a voz é o Bruno), adaptável a qualquer
-nicho.
+Site da Heryzon (heryzon.com.br) que apresenta a Vozzi, agente de voz com IA. O assistente da demonstração se chama Bruno.
+Português é o idioma padrão e o inglês fica em `/en/`.
 
 ## Estrutura
 
-- `index.html`: página única com hero, problema, solução, demonstração em áudio, investidores e contato.
-- `privacidade.html` / `termos.html` / `cookies.html`: páginas legais (modelo a revisar juridicamente).
-- `styles.css`: estilos e design system do site.
-- `script.js`: waveform (estática e animada ao tocar), menu mobile e envio do formulário por e-mail.
-- `audio/bruno-apresentacao.mp3`: MP3 com a apresentação do Bruno (voz da Vozzi).
-- `favicon.svg`: ícone do site.
+O que vai para o servidor fica na raiz do repositório:
 
-## Como usar
+- `index.html`, `en/index.html`: página principal em PT e EN (geradas).
+- `privacidade/index.html`, `en/privacy/index.html`: política de privacidade em PT e EN (geradas).
+- `assets/styles.css`, `assets/main.js`: estilos e comportamento (fluxograma, seletor de idioma, formulário).
+- `assets/fonts/`: Space Grotesk, Manrope e JetBrains Mono em `.woff2`, servidas pelo próprio site, com as licenças OFL.
+- `audio/bruno-apresentacao.mp3`: demonstração de voz do Bruno.
+- `enviar.php`: recebe o formulário e envia para contato@heryzon.com.br com `mail()`.
+- `.htaccess`: redireciona as páginas antigas para `/privacidade/` e bloqueia `src/`, `tests/` e `docs/`.
+- `robots.txt`, `sitemap.xml`, `favicon.svg`.
 
-É um site 100% estático (HTML, CSS e JavaScript puro) — não precisa de build
-nem de dependências. Basta abrir o `index.html` no navegador (duplo clique).
+Código-fonte (não precisa ir para o servidor, e o `.htaccess` bloqueia mesmo assim):
 
-Para testar servindo por HTTP (recomendado, alguns navegadores restringem
-recursos quando o arquivo é aberto direto do disco), rode um servidor estático
-simples na pasta do projeto. Com Node instalado:
+- `src/content/pt.mjs`, `src/content/en.mjs`: todos os textos do site, da especificação aprovada.
+- `src/content/privacy-pt.md`, `src/content/privacy-en.md`: texto da política.
+- `src/templates/`: estrutura HTML das páginas.
+- `src/build.mjs`: gera as 4 páginas. Os dados cadastrais da política ficam em `COMPANY`.
+- `src/dev-server.mjs`: servidor local que simula o `enviar.php`.
+
+## Como rodar localmente
+
+Requer Node 20 ou mais novo. Não há dependências para instalar.
 
 ```bash
-npx --yes serve .
+npm run build      # gera as páginas a partir de src/
+npm test           # testes do gerador
+npm run dev        # http://127.0.0.1:8080, formulário simulando sucesso
+FORM_MOCK=error npm run dev   # formulário simulando erro
 ```
 
-Ou, se tiver Python: `python -m http.server 8000` e acesse
-http://localhost:8000.
+Depois de mudar textos, modelos, CSS ou JS, rode `npm run build`. As páginas geradas e a versão dos arquivos de CSS e JS são atualizadas juntas.
 
 ## Publicação
 
-Por ser estático, pode ser hospedado em qualquer serviço de arquivos estáticos
-(GitHub Pages, Netlify, Vercel, Cloudflare Pages, etc.) — basta subir o
-conteúdo da pasta.
+Suba para a pasta do domínio (`public_html` na Hostinger) os arquivos do site: `index.html`, `en/`, `privacidade/`, `assets/`, `audio/`, `enviar.php`, `.htaccess`, `robots.txt`, `sitemap.xml` e `favicon.svg`. Se o deploy for por Git, o repositório inteiro pode ir: o `.htaccess` bloqueia o acesso a `src/`, `tests/` e `docs/`.
 
-## Observações
+Na data de publicação, preencha `COMPANY.publishedAt` em `src/build.mjs` e rode `npm run build`.
 
-- O formulário de contato monta um link `mailto:` e abre o aplicativo de e-mail
-  do visitante; ele não envia mensagens por um servidor.
-- O áudio final do Bruno pode substituir `audio/bruno-apresentacao.mp3` mantendo
-  o mesmo caminho.
+## Privacidade
+
+O site não usa cookies, analytics nem scripts de terceiros. A única coisa guardada no navegador é a escolha de idioma (`localStorage`, chave `heryzon-lang`).
