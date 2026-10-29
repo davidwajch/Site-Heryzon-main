@@ -21,6 +21,50 @@ function field($key)
     return trim((string) ($_POST[$key] ?? ''));
 }
 
+// Limite de envios por IP, sem banco: cada IP (guardado só como hash) tem um arquivo
+// com os horários dos últimos envios, na pasta temporária do servidor.
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW = 600; // segundos
+
+function rateLimited($ip)
+{
+    $dir = sys_get_temp_dir() . '/heryzon-form';
+    if (!is_dir($dir) && !@mkdir($dir, 0700, true) && !is_dir($dir)) {
+        // Sem onde registrar, o envio segue: melhor aceitar a mensagem do que perder um contato.
+        error_log('enviar.php: limite por IP desativado, sem acesso a ' . $dir);
+        return false;
+    }
+
+    $now = time();
+    foreach (glob($dir . '/*.json') ?: [] as $old) {
+        if (filemtime($old) < $now - RATE_LIMIT_WINDOW) {
+            @unlink($old);
+        }
+    }
+
+    $handle = @fopen($dir . '/' . hash('sha256', $ip) . '.json', 'c+');
+    if ($handle === false) {
+        error_log('enviar.php: limite por IP desativado, falha ao abrir o registro');
+        return false;
+    }
+    flock($handle, LOCK_EX);
+    $hits = json_decode((string) stream_get_contents($handle), true);
+    $recent = array_values(array_filter(is_array($hits) ? $hits : [], function ($time) use ($now) {
+        return is_int($time) && $time > $now - RATE_LIMIT_WINDOW;
+    }));
+    $limited = count($recent) >= RATE_LIMIT_MAX;
+    if (!$limited) {
+        $recent[] = $now;
+    }
+    ftruncate($handle, 0);
+    rewind($handle);
+    fwrite($handle, json_encode($recent));
+    flock($handle, LOCK_UN);
+    fclose($handle);
+
+    return $limited;
+}
+
 $name = field('name');
 $email = field('email');
 $company = field('company');
@@ -52,6 +96,12 @@ $tooLong = strlen($name) > 200 || strlen($email) > 200 || strlen($company) > 200
 if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $tooLong) {
     http_response_code(422);
     echo json_encode(['ok' => false, 'error' => 'invalid_fields']);
+    exit;
+}
+
+if (rateLimited($_SERVER['REMOTE_ADDR'] ?? '')) {
+    http_response_code(429);
+    echo json_encode(['ok' => false, 'error' => 'rate_limited']);
     exit;
 }
 

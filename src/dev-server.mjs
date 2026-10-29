@@ -1,5 +1,6 @@
 // Servidor local para testar o site sem PHP.
-// POST /enviar.php é simulado: responde sucesso, ou erro 500 com FORM_MOCK=error.
+// POST /enviar.php é simulado: responde sucesso, erro 500 com FORM_MOCK=error
+// ou limite de envios (429) com FORM_MOCK=limit.
 // Uso: npm run dev   (ou FORM_MOCK=error npm run dev)
 
 import { createServer } from "node:http";
@@ -36,9 +37,9 @@ createServer(async (req, res) => {
     for await (const chunk of req) body += chunk;
     console.log(`[form] ${body.length} bytes recebidos`);
     await new Promise((resolve) => setTimeout(resolve, 800));
-    const fail = process.env.FORM_MOCK === "error";
-    res.writeHead(fail ? 500 : 200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(fail ? { ok: false, error: "send_failed" } : { ok: true }));
+    const mock = { error: [500, "send_failed"], limit: [429, "rate_limited"] }[process.env.FORM_MOCK];
+    res.writeHead(mock ? mock[0] : 200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(mock ? { ok: false, error: mock[1] } : { ok: true }));
     return;
   }
 
@@ -57,5 +58,5 @@ createServer(async (req, res) => {
   res.writeHead(200, { "Content-Type": TYPES[path.extname(file)] || "application/octet-stream" });
   res.end(data);
 }).listen(PORT, "127.0.0.1", () => {
-  console.log(`http://127.0.0.1:${PORT}${process.env.FORM_MOCK === "error" ? "  (formulário simulando erro)" : ""}`);
+  console.log(`http://127.0.0.1:${PORT}${process.env.FORM_MOCK ? `  (formulário simulando: ${process.env.FORM_MOCK})` : ""}`);
 });

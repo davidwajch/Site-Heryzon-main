@@ -12,7 +12,7 @@ O que vai para o servidor fica na raiz do repositório:
 - `assets/styles.css`, `assets/main.js`: estilos e comportamento (fluxograma, seletor de idioma, formulário).
 - `assets/fonts/`: Space Grotesk, Manrope e JetBrains Mono em `.woff2`, servidas pelo próprio site, com as licenças OFL.
 - `audio/bruno-apresentacao.mp3`: demonstração de voz do Bruno.
-- `enviar.php`: recebe o formulário e envia para contato@heryzon.com.br com `mail()`.
+- `enviar.php`: recebe o formulário e envia para contato@heryzon.com.br com `mail()`. Aceita no máximo 5 envios por IP a cada 10 minutos; o registro fica na pasta temporária do servidor, com o IP guardado só como hash.
 - `.htaccess`: redireciona as páginas antigas para `/privacidade/` e bloqueia `src/`, `tests/` e `docs/`.
 - `robots.txt`, `sitemap.xml`, `favicon.svg`.
 
@@ -33,6 +33,7 @@ npm run build      # gera as páginas a partir de src/
 npm test           # testes do gerador
 npm run dev        # http://127.0.0.1:8080, formulário simulando sucesso
 FORM_MOCK=error npm run dev   # formulário simulando erro
+FORM_MOCK=limit npm run dev   # formulário simulando limite de envios atingido
 ```
 
 Depois de mudar textos, modelos, CSS ou JS, rode `npm run build`. As páginas geradas e a versão dos arquivos de CSS e JS são atualizadas juntas.
