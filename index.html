@@ -1,448 +1,215 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vozzi | Heryzon</title>
-    <meta
-      name="description"
-      content="Atendimento por voz que entende o que a pessoa precisa, resolve na hora ou encaminha com contexto, reduzindo tempo, custo e abandono. Adaptável a qualquer nicho."
-    />
-    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-
-    <!-- Open Graph / Twitter -->
-    <meta property="og:title" content="Heryzon | Vozzi" />
-    <meta
-      property="og:description"
-      content="Atendimento por voz que entende, resolve e encaminha com contexto. Adaptável a qualquer nicho."
-    />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary" />
-
-    <!-- Fontes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
-
-    <link rel="stylesheet" href="styles.css?v=3" />
-  </head>
-  <body data-theme="teal">
-    <!-- Cabeçalho -->
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="wordmark" href="#top" aria-label="Heryzon home">
-          <span aria-hidden="true"></span>
-          HERYZON
-        </a>
-
-        <nav class="desktop-nav" aria-label="Navegação principal">
-          <a href="#desafios">Desafios</a>
-          <a href="#solucao">Solução</a>
-          <a href="#demonstracao">Ouça o Bruno</a>
-          <a href="#investidores">Investidores</a>
-        </nav>
-
-        <a class="button button-primary header-cta" href="#contato"
-          >Agendar uma conversa</a
-        >
-
-        <details class="mobile-menu">
-          <summary aria-label="Abrir menu">
-            <span></span>
-            <span></span>
-          </summary>
-          <div>
-            <a href="#desafios">Desafios</a>
-            <a href="#solucao">Solução</a>
-            <a href="#demonstracao">Ouça o Bruno</a>
-            <a href="#investidores">Investidores</a>
-            <a href="#contato">Agendar uma conversa</a>
-          </div>
-        </details>
-      </div>
-    </header>
-
-    <main id="top">
-      <!-- Hero -->
-      <section class="hero section-dark">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <p class="section-label">VOZZI · UMA SOLUÇÃO DA HERYZON</p>
-            <h1>
-              Agentes de voz para reduzir tempo, custo e abandono no
-              atendimento.
-            </h1>
-            <p>
-              Atendimento telefônico com inteligência de voz para entender
-              solicitações, coletar informações e encaminhar cada conversa.
-            </p>
-          </div>
-
-          <aside class="hero-signal-card" aria-label="Amostra de voz do Bruno">
-            <span class="signal-kicker">Ouça o Bruno</span>
-            <p>Conheça a voz que vai conduzir o seu atendimento.</p>
-            <div class="waveform" aria-hidden="true" data-waveform></div>
-            <audio
-              class="hero-audio-player"
-              controls
-              preload="metadata"
-              src="audio/bruno-apresentacao.mp3"
-              aria-label="Ouvir a apresentação do Bruno"
-            >
-              <a href="audio/bruno-apresentacao.mp3">Baixar o áudio</a>
-            </audio>
-          </aside>
-        </div>
-      </section>
-
-      <!-- Desafios -->
-      <section class="problem-section" id="desafios">
-        <div class="container problem-layout">
-          <div class="section-intro">
-            <p class="section-label">DESAFIOS</p>
-            <h2>Os desafios do atendimento vão além de quem está na linha.</h2>
-          </div>
-          <div class="problem-cards">
-            <article class="problem-card">
-              <h3>Quem busca atendimento</h3>
-              <p>
-                Enfrenta menus confusos, repete informações, espera na linha e
-                depende da disponibilidade do atendente.
-              </p>
-            </article>
-            <article class="problem-card">
-              <h3>Empresas e operações</h3>
-              <p>
-                Operam com alto custo, dificuldade de escalar e perda de
-                clientes por demora ou abandono.
-              </p>
-            </article>
-            <article class="problem-card">
-              <h3>Gestores</h3>
-              <p>
-                Têm pouca visibilidade dos gargalos e recebem transferências sem
-                contexto, obrigando a equipe a refazer perguntas.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- Solução -->
-      <section class="solution-section" id="solucao">
-        <div class="container">
-          <div class="solution-heading">
-            <div class="section-intro">
-              <p class="section-label">SOLUÇÃO</p>
-              <h2>A pessoa fala o que precisa. O Bruno conduz o fluxo.</h2>
-              <p>
-                Em vez de navegar por menus rígidos, a pessoa simplesmente fala.
-                O Bruno entende a intenção, reúne as informações necessárias e
-                resolve na hora ou direciona para a pessoa certa, com todo o
-                contexto.
-              </p>
-            </div>
-          </div>
-
-          <div class="solution-flow">
-            <div
-              class="flowchart"
-              role="img"
-              aria-label="Fluxo do atendimento com a Vozzi: o cliente liga e fala o que precisa; a triagem entende o motivo e direciona para dúvidas, solicitações ou agendamentos, resolvidos por voz; tudo é registrado automaticamente no sistema. Casos complexos são transferidos para um atendente humano já com o resumo. A Vozzi consulta os documentos e regras da operação."
-            >
-              <svg viewBox="0 0 980 630" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <marker id="av" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
-                    <path d="M0,0 L6,3 L0,6 z" fill="#12a0a8" />
-                  </marker>
-                  <marker id="ao" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
-                    <path d="M0,0 L6,3 L0,6 z" fill="#c2691f" />
-                  </marker>
-                  <style>
-                    .fc-node { fill: #ffffff; stroke: #dde3e8; stroke-width: 1.5; }
-                    .fc-vbox { fill: #f2fbfb; stroke: #12a0a8; stroke-width: 1.5; }
-                    .fc-diamond { fill: #12a0a8; }
-                    .fc-reg { fill: #dcf1f2; stroke: #12a0a8; stroke-width: 1.5; }
-                    .fc-human { fill: #fff6ef; stroke: #e2924a; stroke-width: 1.5; }
-                    .fc-t { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 15px; fill: #0a0f14; }
-                    .fc-s { font-family: "Manrope", sans-serif; font-size: 12px; fill: #5a6b7b; }
-                    .fc-dt { fill: #ffffff; }
-                    .fc-ds { fill: rgba(255,255,255,0.85); }
-                    .fc-lbl { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 11px; fill: #0e7f8a; letter-spacing: 1px; }
-                    .fc-edge { fill: none; stroke: #12a0a8; stroke-width: 2; }
-                    .fc-exc { fill: none; stroke: #e2924a; stroke-width: 2; }
-                    .fc-dash { fill: none; stroke: #9fb0bd; stroke-width: 1.5; stroke-dasharray: 5 5; }
-                    .fc-olbl { font-family: "Manrope", sans-serif; font-weight: 700; font-size: 11px; fill: #c2691f; }
-                    .fc-cons { font-family: "JetBrains Mono", monospace; font-size: 10px; fill: #9fb0bd; }
-                    .fc-bar { fill: #12a0a8; }
-                  </style>
-                </defs>
-
-                <!-- Container Vozzi -->
-                <rect class="fc-vbox" x="190" y="30" width="610" height="460" rx="18" />
-                <text class="fc-lbl" x="212" y="58">VOZZI · IA DE VOZ</text>
-
-                <!-- Edges -->
-                <path class="fc-edge" d="M158,260 H223" marker-end="url(#av)" />
-                <path class="fc-edge" d="M345,260 H388 V108 H408" marker-end="url(#av)" />
-                <path class="fc-edge" d="M345,260 H408" marker-end="url(#av)" />
-                <path class="fc-edge" d="M345,260 H388 V412 H408" marker-end="url(#av)" />
-                <path class="fc-edge" d="M590,108 H612 V260 H633" marker-end="url(#av)" />
-                <path class="fc-edge" d="M590,260 H633" marker-end="url(#av)" />
-                <path class="fc-edge" d="M590,412 H612 V260 H633" marker-end="url(#av)" />
-                <!-- Exceção: humano -->
-                <path class="fc-exc" d="M285,315 V462 H816" marker-end="url(#ao)" />
-                <text class="fc-olbl" x="300" y="482">
-                  Caso complexo: a Vozzi coleta os dados e transfere
-                </text>
-                <!-- Consulta RAG -->
-                <path class="fc-dash" d="M500,490 V548" />
-                <text class="fc-cons" x="510" y="522">consulta (RAG)</text>
-
-                <!-- Cliente liga -->
-                <rect class="fc-node" x="8" y="215" width="150" height="90" rx="12" />
-                <text class="fc-t" x="26" y="256">Cliente liga</text>
-                <text class="fc-s" x="26" y="276">e fala o que precisa</text>
-
-                <!-- Triagem (diamante) -->
-                <polygon class="fc-diamond" points="285,205 345,260 285,315 225,260" />
-                <text class="fc-t fc-dt" text-anchor="middle" x="285" y="257">Triagem</text>
-                <text class="fc-s fc-ds" text-anchor="middle" x="285" y="274">entende o motivo</text>
-
-                <!-- Dúvidas -->
-                <rect class="fc-node" x="410" y="66" width="180" height="84" rx="12" />
-                <rect class="fc-bar" x="426" y="90" width="3" height="8" />
-                <rect class="fc-bar" x="432" y="82" width="3" height="16" />
-                <rect class="fc-bar" x="438" y="86" width="3" height="12" />
-                <rect class="fc-bar" x="444" y="78" width="3" height="20" />
-                <text class="fc-t" x="426" y="120">Dúvidas</text>
-                <text class="fc-s" x="426" y="138">responde na hora</text>
-
-                <!-- Solicitações -->
-                <rect class="fc-node" x="410" y="218" width="180" height="84" rx="12" />
-                <rect class="fc-bar" x="426" y="242" width="3" height="8" />
-                <rect class="fc-bar" x="432" y="234" width="3" height="16" />
-                <rect class="fc-bar" x="438" y="238" width="3" height="12" />
-                <rect class="fc-bar" x="444" y="230" width="3" height="20" />
-                <text class="fc-t" x="426" y="272">Solicitações</text>
-                <text class="fc-s" x="426" y="290">resolve por voz</text>
-
-                <!-- Agendamentos -->
-                <rect class="fc-node" x="410" y="370" width="180" height="84" rx="12" />
-                <rect class="fc-bar" x="426" y="394" width="3" height="8" />
-                <rect class="fc-bar" x="432" y="386" width="3" height="16" />
-                <rect class="fc-bar" x="438" y="390" width="3" height="12" />
-                <rect class="fc-bar" x="444" y="382" width="3" height="20" />
-                <text class="fc-t" x="426" y="424">Agendamentos</text>
-                <text class="fc-s" x="426" y="442">marca por voz</text>
-
-                <!-- Registro automático -->
-                <rect class="fc-reg" x="633" y="218" width="152" height="84" rx="12" />
-                <text class="fc-t" x="651" y="256" style="font-size:13px">Registro automático</text>
-                <text class="fc-s" x="651" y="274">no sistema, com resumo</text>
-
-                <!-- Atendente humano -->
-                <rect class="fc-human" x="816" y="420" width="156" height="88" rx="12" />
-                <text class="fc-t" x="834" y="452" style="font-size:14px">Atendente humano</text>
-                <text class="fc-s" x="834" y="470">casos complexos,</text>
-                <text class="fc-s" x="834" y="486">já com o resumo</text>
-
-                <!-- Base de conhecimento (RAG) -->
-                <rect class="fc-node" x="360" y="548" width="300" height="64" rx="12" />
-                <text class="fc-t" x="380" y="578" style="font-size:14px">Base de conhecimento</text>
-                <text class="fc-s" x="380" y="596">documentos e regras da operação (RAG)</text>
-              </svg>
-            </div>
-
-            <aside class="whatchanges">
-              <p class="section-label">O QUE MUDA</p>
-              <ul>
-                <li>
-                  <strong>Sem fila</strong> para dúvidas e solicitações, 24h por
-                  dia.
-                </li>
-                <li>
-                  <strong>Humano só nos casos complexos</strong>, e já recebe o
-                  resumo.
-                </li>
-                <li><strong>Tudo registrado</strong>, sem digitação manual.</li>
-                <li>
-                  <strong>Respostas oficiais</strong>, tiradas dos seus
-                  documentos.
-                </li>
-              </ul>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <!-- Demonstração em áudio -->
-      <section class="mvp-section section-dark" id="demonstracao">
-        <div class="container mvp-layout">
-          <div class="section-intro">
-            <p class="section-label">DEMONSTRAÇÃO</p>
-            <h2>Conheça a voz do Bruno.</h2>
-            <p>
-              Uma amostra do tom, da naturalidade e do jeito de falar que vão
-              representar a sua operação no telefone.
-            </p>
-          </div>
-
-          <div class="audio-demo-card" aria-label="Apresentação do Bruno em áudio">
-            <div class="audio-demo-head">
-              <div>
-                <span class="audio-demo-kicker">Demonstração de voz</span>
-                <h3>Conheça o Bruno</h3>
-              </div>
-              <span class="audio-demo-duration">24s</span>
-            </div>
-            <div class="waveform" aria-hidden="true" data-waveform></div>
-            <audio
-              class="audio-demo-player"
-              controls
-              preload="metadata"
-              src="audio/bruno-apresentacao.mp3"
-              aria-label="Ouvir a apresentação do Bruno"
-            >
-              <a href="audio/bruno-apresentacao.mp3">Baixar o áudio</a>
-            </audio>
-            <p>Uma amostra da voz e do jeito do Bruno de se comunicar.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Investidores -->
-      <section class="investors-section" id="investidores">
-        <div class="container investors-band">
-          <p class="section-label">INVESTIDORES</p>
-          <h2>Estamos construindo a Heryzon e buscando quem embarque cedo.</h2>
-          <p>
-            A Vozzi é o primeiro passo de uma plataforma de atendimento por voz
-            pensada para se adaptar a diferentes mercados. Se você investe em
-            estágios iniciais e quer entender a oportunidade, vamos conversar.
-          </p>
-          <a class="button button-primary" href="#contato"
-            >Conversar sobre investimento <span aria-hidden="true">→</span></a
-          >
-        </div>
-      </section>
-
-      <!-- Contato -->
-      <section class="contact-section" id="contato">
-        <div class="container contact-band">
-          <div>
-            <p class="section-label">CONTATO</p>
-            <h2>Agende uma conversa.</h2>
-            <p>
-              Conte rapidamente o seu caso e a gente responde o quanto antes.
-            </p>
-          </div>
-
-          <form class="contact-form" id="contact-form" novalidate>
-            <div class="form-hp" aria-hidden="true">
-              <label
-                >Deixe este campo em branco
-                <input
-                  type="text"
-                  name="website"
-                  tabindex="-1"
-                  autocomplete="off"
-              /></label>
-            </div>
-            <div class="form-field">
-              <label for="name">Nome</label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Como podemos te chamar?"
-                required
-              />
-            </div>
-            <div class="form-field">
-              <label for="email">Email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="voce@empresa.com"
-                required
-              />
-            </div>
-            <div class="form-field">
-              <label for="interest">Você quer</label>
-              <select id="interest" name="interest" required>
-                <option value="Conhecer a solução">Conhecer a solução</option>
-                <option value="Falar sobre investimento">
-                  Falar sobre investimento
-                </option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="organization">Organização <span class="field-optional">(opcional)</span></label>
-              <input
-                id="organization"
-                name="organization"
-                type="text"
-                placeholder="Empresa ou projeto"
-              />
-            </div>
-            <div class="form-field">
-              <label for="message">Mensagem</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="5"
-                placeholder="Conte rapidamente o que você precisa."
-                required
-              ></textarea>
-            </div>
-            <button class="button button-primary" type="submit">
-              Enviar mensagem <span aria-hidden="true">→</span>
-            </button>
-            <p class="form-status" id="form-status" aria-live="polite"></p>
-          </form>
-        </div>
-      </section>
-    </main>
-
-    <!-- Rodapé -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div>
-            <a class="wordmark" href="#top" aria-label="Heryzon home">
-              <span aria-hidden="true"></span>
-              HERYZON
-            </a>
-            <p>
-              Desenvolvemos agentes de voz para reduzir tempo, custo e abandono
-              no atendimento, adaptáveis a qualquer nicho.
-            </p>
-          </div>
-          <nav aria-label="Links do rodapé">
-            <a href="#desafios">Desafios</a>
-            <a href="#solucao">Solução</a>
-            <a href="#demonstracao">Ouça o Bruno</a>
-            <a href="#investidores">Investidores</a>
-            <a href="#contato">Contato</a>
-          </nav>
-        </div>
-
-        <div class="footer-bottom">
-          <p class="footer-copy">© 2026 Heryzon. Todos os direitos reservados.</p>
-          <nav class="footer-legal" aria-label="Links legais">
-            <a href="privacidade.html">Política de Privacidade</a>
-            <a href="termos.html">Termos de Uso</a>
-            <a href="cookies.html">Política de Cookies</a>
-          </nav>
-        </div>
-      </div>
-    </footer>
-
-    <script src="script.js?v=3"></script>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add("js")</script>
+<script>try{if(localStorage.getItem("heryzon-lang")==="en")location.replace("/en/"+location.hash)}catch(_){}</script>
+<title>Vozzi por Heryzon — assistente virtual de voz para atendimento telefônico</title>
+<meta name="description" content="A Vozzi atende as ligações da sua empresa 24 horas por dia, resolve os pedidos que se repetem e passa o restante para a sua equipe com o resumo da conversa.">
+<link rel="canonical" href="https://heryzon.com.br/">
+<link rel="alternate" hreflang="pt-BR" href="https://heryzon.com.br/">
+<link rel="alternate" hreflang="en" href="https://heryzon.com.br/en/">
+<link rel="alternate" hreflang="x-default" href="https://heryzon.com.br/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Heryzon">
+<meta property="og:title" content="Vozzi por Heryzon — assistente virtual de voz para atendimento telefônico">
+<meta property="og:description" content="A Vozzi atende as ligações da sua empresa 24 horas por dia, resolve os pedidos que se repetem e passa o restante para a sua equipe com o resumo da conversa.">
+<meta property="og:url" content="https://heryzon.com.br/">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#F7F9FA">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/styles.css?v=2487c09d83">
+<script src="/assets/main.js?v=7ba3831e4e" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-header">
+<div class="container header-inner">
+<a class="brand" href="#topo"><svg class="diamond" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><rect x="3" y="3" width="12" height="12" rx="2" transform="rotate(45 9 9)"/></svg><span class="brand-word" translate="no">HERYZON</span></a>
+<button type="button" class="menu-toggle" aria-expanded="false" aria-controls="main-nav" data-label-open="Menu" data-label-close="Fechar menu"><span class="menu-toggle-icon" aria-hidden="true"></span><span class="menu-toggle-label">Menu</span></button>
+<nav class="main-nav" id="main-nav" aria-label="Principal"><ul><li><a href="#desafios">Desafios</a></li><li><a href="#como-funciona">Como funciona</a></li><li><a href="#ouca">Ouça o Bruno</a></li><li><a href="#piloto">Piloto</a></li><li><a href="#investidores">Investidores</a></li></ul></nav>
+<div class="header-actions">
+<div class="lang-switch"><a href="/" hreflang="pt-BR" lang="pt-BR" data-lang-switch="pt" aria-label="Português" aria-current="page">PT</a><span aria-hidden="true">/</span><a href="/en/" hreflang="en" lang="en" data-lang-switch="en" aria-label="English">EN</a></div>
+<a class="btn btn-primary btn-compact" href="#contato" data-interest="piloto">Quero ser piloto</a>
+</div>
+</div>
+</header>
+<main id="conteudo">
+<section id="topo" class="container hero">
+<div class="hero-copy">
+<p class="eyebrow">VOZZI · UMA SOLUÇÃO HERYZON</p>
+<h1 class="hero-title">Menos menu, menos fila. <span class="title-muted">Mais ligações resolvidas.</span></h1>
+<p class="hero-subtitle">A Vozzi é um assistente virtual de voz que atende as ligações da sua empresa, 24 horas por dia. Ele entende o que a pessoa precisa, resolve os pedidos que se repetem e passa o restante para a sua equipe, já com o resumo da conversa.</p>
+<div class="button-row">
+<a class="btn btn-primary" href="#contato" data-interest="piloto">Quero ser piloto</a>
+<a class="btn btn-secondary" href="#ouca"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z"/></svg>Ouvir o Bruno</a>
+</div>
+<p class="hero-note">Programa piloto com a primeira validação gratuita.</p>
+</div>
+<div class="call-panel">
+<div class="call-panel-head">
+<span class="call-panel-title"><span class="live-dot" aria-hidden="true"></span>Bruno · assistente virtual</span>
+<span class="badge">DEMONSTRAÇÃO DE VOZ</span>
+</div>
+<div class="wave" aria-hidden="true"><span style="--bar:18;animation-delay:0.00s"></span><span style="--bar:30;animation-delay:0.11s"></span><span style="--bar:44;animation-delay:0.22s"></span><span style="--bar:26;animation-delay:0.33s"></span><span style="--bar:52;animation-delay:0.44s"></span><span style="--bar:36;animation-delay:0.55s"></span><span style="--bar:22;animation-delay:0.66s"></span><span style="--bar:48;animation-delay:0.77s"></span><span style="--bar:60;animation-delay:0.88s"></span><span style="--bar:34;animation-delay:0.99s"></span><span style="--bar:20;animation-delay:1.10s"></span><span style="--bar:42;animation-delay:0.00s"></span><span style="--bar:56;animation-delay:0.11s"></span><span style="--bar:30;animation-delay:0.22s"></span><span style="--bar:46;animation-delay:0.33s"></span><span style="--bar:24;animation-delay:0.44s"></span><span style="--bar:38;animation-delay:0.55s"></span><span style="--bar:58;animation-delay:0.66s"></span><span style="--bar:28;animation-delay:0.77s"></span><span style="--bar:50;animation-delay:0.88s"></span><span style="--bar:32;animation-delay:0.99s"></span><span style="--bar:18;animation-delay:1.10s"></span><span style="--bar:40;animation-delay:0.00s"></span><span style="--bar:54;animation-delay:0.11s"></span><span style="--bar:26;animation-delay:0.22s"></span><span style="--bar:36;animation-delay:0.33s"></span><span style="--bar:22;animation-delay:0.44s"></span><span style="--bar:16;animation-delay:0.55s"></span></div>
+<div class="call-panel-audio">
+<p class="call-panel-caption" id="call-panel-caption">Ouça como o Bruno se apresenta.</p>
+<audio controls preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="call-panel-caption"></audio>
+</div>
+</div>
+</section>
+<div class="marquee" role="marquee" tabindex="0" aria-label="ATENDE 24 H, ENTENDE A FALA, TIRA DÚVIDAS, AGENDA, REMARCA, CANCELA, FAZ TRIAGEM, TRANSFERE COM CONTEXTO">
+<div class="marquee-track" aria-hidden="true"><span>ATENDE 24 H <span class="marquee-diamond">◆</span> ENTENDE A FALA <span class="marquee-diamond">◆</span> TIRA DÚVIDAS <span class="marquee-diamond">◆</span> AGENDA <span class="marquee-diamond">◆</span> REMARCA <span class="marquee-diamond">◆</span> CANCELA <span class="marquee-diamond">◆</span> FAZ TRIAGEM <span class="marquee-diamond">◆</span> TRANSFERE COM CONTEXTO <span class="marquee-diamond">◆</span></span><span>ATENDE 24 H <span class="marquee-diamond">◆</span> ENTENDE A FALA <span class="marquee-diamond">◆</span> TIRA DÚVIDAS <span class="marquee-diamond">◆</span> AGENDA <span class="marquee-diamond">◆</span> REMARCA <span class="marquee-diamond">◆</span> CANCELA <span class="marquee-diamond">◆</span> FAZ TRIAGEM <span class="marquee-diamond">◆</span> TRANSFERE COM CONTEXTO <span class="marquee-diamond">◆</span></span></div>
+</div>
+<section id="desafios" class="container section section-challenges">
+<div class="section-head"><p class="eyebrow">DESAFIOS</p><h2 class="section-title">Quando o telefone vira gargalo, <span class="title-muted">todo mundo perde.</span></h2></div>
+<ul class="card-row"><li class="card"><span class="mono-num">01</span><h3 class="card-title">Quem liga</h3><p>Navega por menus confusos, espera na linha e repete a mesma informação para mais de uma pessoa.</p></li><li class="card"><span class="mono-num">02</span><h3 class="card-title">A operação</h3><p>Gasta tempo da equipe com perguntas repetidas, tem dificuldade de crescer e perde ligações nos picos e fora do horário.</p></li><li class="card"><span class="mono-num">03</span><h3 class="card-title">A gestão</h3><p>Tem pouca visão do que as pessoas procuram e recebe transferências sem contexto.</p></li></ul>
+</section>
+<section id="como-funciona" class="band band-white">
+<div class="container section">
+<div class="section-head"><p class="eyebrow">COMO FUNCIONA</p><h2 class="section-title">A pessoa fala. <span class="title-muted">O Bruno conduz.</span></h2></div>
+<div class="how-grid">
+<div class="how-flow">
+<div class="flow" role="img" aria-label="Fluxograma: o cliente liga; o Bruno faz a triagem; consulta a base de conhecimento da empresa; resolve dúvidas, solicitações e agendamentos na ligação ou passa os casos fora das regras para um atendente humano com o resumo; tudo é registrado automaticamente.">
+<div class="flow-node flow-node-main" data-node="cliente"><span class="flow-node-title">Cliente liga</span><span class="flow-node-text">e fala o que precisa</span></div>
+<span class="flow-line"></span>
+<div class="flow-node flow-node-main" data-node="triagem"><span class="flow-node-title">Triagem</span><span class="flow-node-text">o Bruno entende o motivo</span></div>
+<span class="flow-line flow-line-short"></span>
+<span class="flow-split"></span>
+<div class="flow-branches">
+<div class="flow-branch">
+<div class="flow-group">
+<span class="flow-group-label">RESOLVE NA LIGAÇÃO</span>
+<div class="flow-node" data-node="kb"><span class="flow-node-title">Base de conhecimento</span><span class="flow-node-text">documentos e regras da sua empresa</span></div>
+<div class="flow-node" data-node="resolve"><span class="flow-node-title">Dúvidas</span><span class="flow-node-text">responde na hora</span></div>
+<div class="flow-node" data-node="resolve"><span class="flow-node-title">Solicitações</span><span class="flow-node-text">resolve por voz</span></div>
+<div class="flow-node" data-node="resolve"><span class="flow-node-title">Agendamentos</span><span class="flow-node-text">marca, remarca e cancela</span></div>
+</div>
+<span class="flow-line flow-line-grow"></span>
+</div>
+<div class="flow-branch">
+<div class="flow-node flow-node-outside" data-node="humano"><span class="flow-group-label flow-group-label-muted">FORA DAS REGRAS</span><span class="flow-node-title">Atendente humano</span><span class="flow-node-text">recebe a ligação já com o resumo</span></div>
+<span class="flow-line flow-line-grow"></span>
+</div>
+</div>
+<span class="flow-join"></span>
+<span class="flow-line flow-line-short"></span>
+<div class="flow-node flow-node-main" data-node="registro"><span class="flow-node-title">Registro automático</span><span class="flow-node-text">motivo, o que foi feito e o resumo</span></div>
+</div>
+</div>
+<ol class="how-steps"><li class="how-step" data-step="1"><span class="mono-num" aria-hidden="true">01</span><div><h3 class="card-title">Atende</h3><p>Atende na hora, a qualquer horário, sem menu de teclas.</p></div></li><li class="how-step" data-step="2"><span class="mono-num" aria-hidden="true">02</span><div><h3 class="card-title">Entende</h3><p>A pessoa explica com as próprias palavras, e o Bruno identifica o motivo da ligação.</p></div></li><li class="how-step" data-step="3"><span class="mono-num" aria-hidden="true">03</span><div><h3 class="card-title">Consulta</h3><p>Busca a resposta nos documentos e nas regras que a sua empresa aprovou.</p></div></li><li class="how-step" data-step="4"><span class="mono-num" aria-hidden="true">04</span><div><h3 class="card-title">Resolve</h3><p>Tira a dúvida, agenda, remarca ou cancela durante a própria ligação.</p></div></li><li class="how-step" data-step="5"><span class="mono-num" aria-hidden="true">05</span><div><h3 class="card-title">Passa adiante</h3><p>O que precisa de uma pessoa vai para a sua equipe com o resumo pronto. Ninguém repete nada.</p></div></li></ol>
+</div>
+</div>
+</section>
+<section id="o-que-faz" class="container section section-does">
+<div class="section-head"><p class="eyebrow">O QUE ELE FAZ</p><h2 class="section-title">Claro sobre o que faz. <span class="title-muted">E sobre o que não faz.</span></h2></div>
+<ul class="card-row"><li class="card does-card does-card-1"><h3 class="card-title">Resolve na ligação</h3><ul><li>Dúvidas frequentes (horários, endereços, documentos, procedimentos)</li><li>Agendamentos</li><li>Remarcações</li><li>Cancelamentos</li><li>Triagem do motivo da ligação</li></ul></li><li class="card does-card does-card-2"><h3 class="card-title">Passa para uma pessoa</h3><ul><li>Reclamações graves</li><li>Negociações</li><li>Situações delicadas</li><li>Qualquer pedido sem regra aprovada</li></ul></li><li class="card does-card does-card-3"><h3 class="card-title">Ainda não faz</h3><ul><li>Ligações de saída</li><li>Vendas</li><li>Atendimento por WhatsApp</li></ul></li></ul>
+</section>
+<section id="onde-ajuda" class="container section section-helps">
+<div class="section-head"><p class="eyebrow">ONDE AJUDA</p><h2 class="section-title">Feito para as ligações <span class="title-muted">que se repetem.</span></h2></div>
+<ul class="helps-grid"><li><span class="mono-num">01 / 04</span><h3 class="card-title">Fora do horário</h3><p>À noite, nos fins de semana e nos feriados, a ligação é atendida.</p></li><li><span class="mono-num">02 / 04</span><h3 class="card-title">Nos picos</h3><p>Quando todos chamam ao mesmo tempo, ninguém fica na fila.</p></li><li><span class="mono-num">03 / 04</span><h3 class="card-title">Perguntas repetidas</h3><p>A mesma resposta certa, toda vez, sem ocupar a equipe.</p></li><li><span class="mono-num">04 / 04</span><h3 class="card-title">Agendamentos</h3><p>Marca, remarca e cancela sem passar por um atendente.</p></li></ul>
+</section>
+<section id="ouca" class="container section-hear">
+<div class="hear">
+<div class="hear-copy">
+<p class="eyebrow">OUÇA O BRUNO</p>
+<h2 class="section-title">Cada empresa tem <span class="title-muted">o seu assistente.</span></h2>
+<p>O Bruno é a nossa demonstração. Na sua operação, o assistente pode ter outro nome, outra voz e o tom da sua marca.</p>
+</div>
+<div class="player">
+<div class="player-head">
+<span class="player-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false"><path d="M12 3v18M7 8v8M17 8v8M3 11v2M21 11v2"/></svg></span>
+<span class="player-titles"><span class="player-title" id="player-title">Conheça o Bruno</span><span class="player-subtitle">DEMONSTRAÇÃO · 24 S</span></span>
+</div>
+<audio controls preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="player-title"></audio>
+<p class="player-caption">Uma amostra da voz e do jeito de falar que podem representar a sua empresa no telefone.</p>
+</div>
+</div>
+</section>
+<section id="controle" class="container section-control">
+<div class="section-head"><p class="eyebrow">CONTROLE</p><h2 class="section-title">Quem decide o que o assistente diz <span class="title-muted">é a sua empresa.</span></h2></div>
+<ul class="control-grid"><li class="card control-card"><span class="icon-tile" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span><div><h3 class="card-title">Regras aprovadas</h3><p>O Bruno só responde e age com base nas regras e documentos que a sua empresa aprovou. Sem regra, ele não improvisa.</p></div></li><li class="card control-card"><span class="icon-tile" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><div><h3 class="card-title">Uma pessoa sempre perto</h3><p>Qualquer caso fora das regras vai para a sua equipe, com o resumo da conversa.</p></div></li><li class="card control-card"><span class="icon-tile" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></span><div><h3 class="card-title">Tudo registrado</h3><p>Cada ligação gera um registro com o motivo, o que foi feito e o resumo.</p></div></li><li class="card control-card"><span class="icon-tile" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span><div><h3 class="card-title">Transparência</h3><p>O assistente se apresenta como assistente virtual. Ninguém é enganado.</p></div></li></ul>
+</section>
+<section id="piloto" class="band band-pilot">
+<div class="container section pilot-grid">
+<div class="pilot-copy">
+<p class="eyebrow">PROGRAMA PILOTO</p>
+<h2 class="section-title">Seja uma das primeiras empresas <span class="title-muted">a testar a Vozzi.</span></h2>
+<p>Estamos escolhendo as primeiras empresas para testar a Vozzi na prática. A primeira validação é gratuita: escolhemos juntos um tipo de atendimento, como agendamentos ou dúvidas frequentes, e o assistente atende essas ligações na sua operação. Se quiser validar outros atendimentos depois, combinamos as condições com você antes de começar.</p>
+<a class="btn btn-dark" href="#contato" data-interest="piloto">Quero ser piloto</a>
+</div>
+<div class="pilot-process">
+<ol class="pilot-steps"><li><span class="step-circle" aria-hidden="true">01</span><span>Você manda uma mensagem pelo formulário</span></li><li><span class="step-circle" aria-hidden="true">02</span><span>A gente conversa sobre o atendimento da sua empresa</span></li><li><span class="step-circle" aria-hidden="true">03</span><span>Escolhemos juntos o primeiro tipo de atendimento a validar</span></li><li><span class="step-circle" aria-hidden="true">04</span><span>O assistente atende essas ligações, sem custo para você</span></li></ol>
+<p class="pilot-note">Validações seguintes: condições combinadas antes, sem surpresas.</p>
+</div>
+</div>
+</section>
+<section id="investidores" class="container section-investors">
+<div class="investors">
+<div class="investors-copy">
+<p class="eyebrow">INVESTIDORES</p>
+<h2 class="investors-title">A Vozzi é o primeiro produto <span class="title-muted">da Heryzon.</span></h2>
+<p>Estamos construindo uma plataforma de atendimento por voz que se adapta a diferentes mercados. Se você investe em estágio inicial, queremos conversar.</p>
+</div>
+<a class="btn btn-outline" href="#contato" data-interest="investimento">Falar sobre investimento <span aria-hidden="true">→</span></a>
+</div>
+</section>
+<section id="perguntas" class="container section section-faq">
+<div class="section-head section-head-center"><p class="eyebrow">PERGUNTAS FREQUENTES</p><h2 class="section-title">Antes de conversar.</h2></div>
+<div class="faq-list">
+<details class="faq-item"><summary><span>Quem liga sabe que está falando com um assistente virtual?</span><span class="faq-icon" aria-hidden="true">+</span></summary><p>Sim. O Bruno se apresenta como assistente virtual logo no início.</p></details>
+<details class="faq-item"><summary><span>E se o Bruno não souber responder?</span><span class="faq-icon" aria-hidden="true">+</span></summary><p>Ele não inventa. Transfere a ligação para a sua equipe, com o resumo do que já foi conversado.</p></details>
+<details class="faq-item"><summary><span>Funciona fora do horário comercial?</span><span class="faq-icon" aria-hidden="true">+</span></summary><p>Sim. O assistente atende 24 horas por dia, todos os dias.</p></details>
+<details class="faq-item"><summary><span>Como funciona a integração com os meus sistemas?</span><span class="faq-icon" aria-hidden="true">+</span></summary><p>Ela é construída junto com a sua empresa durante o piloto, a partir do que a sua operação usa hoje.</p></details>
+<details class="faq-item"><summary><span>Atende pelo WhatsApp?</span><span class="faq-icon" aria-hidden="true">+</span></summary><p>Ainda não. Hoje a Vozzi atende ligações telefônicas.</p></details>
+<details class="faq-item"><summary><span>Quanto custa?</span><span class="faq-icon" aria-hidden="true">+</span></summary><p>A primeira validação do piloto é gratuita. As validações seguintes têm condições combinadas com você antes de começar, sem surpresas.</p></details>
+</div>
+</section>
+<section id="contato" class="band band-white band-contact">
+<div class="container section contact-grid">
+<div class="contact-copy">
+<p class="eyebrow">CONTATO</p>
+<h2 class="contact-title">Vamos conversar.</h2>
+<p>Conte rapidamente o seu caso. A gente responde em breve.</p>
+</div>
+<div class="contact-form-wrap">
+<form id="contact-form" class="contact-form" action="/enviar.php" method="post" data-success="Recebemos a sua mensagem. Respondemos em breve." data-error="Não foi possível enviar. Tente de novo em instantes.">
+<fieldset class="topic field-wide" data-announce-piloto="Campos para piloto: nome, e-mail, empresa, segmento, ligações por mês e mensagem." data-announce-investimento="Campos para investidor: nome, e-mail e mensagem."><legend>Sobre o que você quer falar?</legend><div class="topic-options"><label class="topic-option"><input type="radio" name="interest" value="piloto" checked><span>Piloto</span></label><label class="topic-option"><input type="radio" name="interest" value="investimento"><span>Investidor</span></label></div></fieldset>
+<p class="visually-hidden" role="status" data-topic-status></p>
+<div class="field"><label for="f-name">Nome<span class="required-mark" aria-hidden="true">*</span></label><input id="f-name" type="text" name="name" autocomplete="name" maxlength="200" pattern=".*\S.*" required></div>
+<div class="field"><label for="f-email">E-mail<span class="required-mark" aria-hidden="true">*</span></label><input id="f-email" type="email" name="email" autocomplete="email" spellcheck="false" maxlength="200" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required></div>
+<div class="field" data-topic="piloto"><label for="f-company">Empresa</label><input id="f-company" type="text" name="company" autocomplete="organization" maxlength="200"></div>
+<div class="field" data-topic="piloto"><label for="f-industry">Segmento da empresa</label><input id="f-industry" type="text" name="industry" maxlength="200"></div>
+<div class="field" data-topic="piloto"><label for="f-volume">Ligações recebidas por mês</label><select id="f-volume" name="volume"><option value="">—</option><option value="ate-1000">Até 1.000</option><option value="1000-5000">1.000 a 5.000</option><option value="5000-20000">5.000 a 20.000</option><option value="mais-20000">Mais de 20.000</option><option value="nao-sei">Não sei</option></select></div>
+<div class="field field-wide"><label for="f-message">Mensagem (opcional)</label><textarea id="f-message" name="message" rows="4" maxlength="5000"></textarea></div>
+<input type="hidden" name="lang" value="pt">
+<div class="hp-field" aria-hidden="true"><label for="f-website">Website</label><input id="f-website" type="text" name="website" tabindex="-1" autocomplete="off"></div>
+<div class="form-actions">
+<button type="submit" class="btn btn-primary"><span class="spinner" aria-hidden="true"></span>Enviar</button>
+<p class="consent">Ao enviar, você concorda com o uso dos seus dados conforme a nossa <a href="/privacidade/">Política de privacidade</a>.</p>
+</div>
+<p class="form-error" role="alert" hidden></p>
+</form>
+<p class="form-success" role="status" tabindex="-1" hidden></p>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container footer-inner">
+<span class="footer-brand"><svg class="diamond" width="16" height="16" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><rect x="3" y="3" width="12" height="12" rx="2" transform="rotate(45 9 9)"/></svg><span class="brand-word" translate="no">HERYZON</span><span class="footer-product" translate="no">· Vozzi</span></span>
+<nav class="footer-nav" aria-label="Rodapé">
+<a href="/privacidade/">Política de privacidade</a>
+<a href="#contato">Contato</a>
+<div class="lang-switch lang-switch-footer"><a href="/" hreflang="pt-BR" lang="pt-BR" data-lang-switch="pt" aria-label="Português" aria-current="page">PT</a><span aria-hidden="true">/</span><a href="/en/" hreflang="en" lang="en" data-lang-switch="en" aria-label="English">EN</a></div>
+</nav>
+<p class="footer-other">Outros assuntos: <a href="mailto:contato@heryzon.com.br">contato@heryzon.com.br</a></p>
+<span class="footer-rights">© 2026 Heryzon. Todos os direitos reservados.</span>
+</div>
+</footer>
+</body>
 </html>
