@@ -25,8 +25,9 @@ Ela **não** cobre as ligações atendidas pela Vozzi na operação das empresas
 - empresa;
 - segmento da empresa;
 - faixa de ligações recebidas por mês;
-- assunto de interesse (piloto, investimento ou outro);
-- mensagem, se você escrever uma.
+- assunto de interesse (piloto ou investimento);
+- mensagem, se você escrever uma;
+- empresa, segmento e faixa de ligações só são pedidos no contato sobre o piloto.
 
 Pedimos que você não inclua na mensagem dados sensíveis, como informações de saúde, religião ou opinião política, nem dados de outras pessoas.
 

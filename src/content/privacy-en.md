@@ -25,8 +25,9 @@ It does **not** cover calls that Vozzi answers on behalf of our client companies
 - company;
 - industry;
 - range of incoming calls per month;
-- topic of interest (pilot, investing or other);
-- message, if you write one.
+- topic of interest (pilot or investing);
+- message, if you write one;
+- company, industry and range of calls are only requested when you contact us about the pilot.
 
 Please don't include sensitive data in your message, such as health information, religion or political opinions, or data about other people.
 

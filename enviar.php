@@ -74,11 +74,10 @@ $interest = field('interest');
 $message = field('message');
 $lang = field('lang') === 'en' ? 'Inglês' : 'Português';
 
-// Os valores das listas chegam como códigos, iguais nos dois idiomas do site.
+// Os valores chegam como códigos, iguais nos dois idiomas do site.
 $interests = [
     'piloto' => 'Ser piloto',
-    'investimento' => 'Falar sobre investimento',
-    'outro' => 'Outro assunto',
+    'investimento' => 'Investimento',
 ];
 $volumes = [
     'ate-1000' => 'Até 1.000',
@@ -87,13 +86,12 @@ $volumes = [
     'mais-20000' => 'Mais de 20.000',
     'nao-sei' => 'Não sei',
 ];
-$interestLabel = $interests[$interest] ?? 'Outro assunto';
 $volumeLabel = $volumes[$volume] ?? '-';
 
 $tooLong = strlen($name) > 200 || strlen($email) > 200 || strlen($company) > 200
     || strlen($industry) > 200 || strlen($message) > 5000;
 
-if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $tooLong) {
+if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || !isset($interests[$interest]) || $tooLong) {
     http_response_code(422);
     echo json_encode(['ok' => false, 'error' => 'invalid_fields']);
     exit;
@@ -109,6 +107,7 @@ if (rateLimited($_SERVER['REMOTE_ADDR'] ?? '')) {
 $cleanName = preg_replace('/[\r\n]+/', ' ', $name);
 $cleanEmail = preg_replace('/[\r\n]+/', ' ', $email);
 
+$interestLabel = $interests[$interest];
 $to = 'contato@heryzon.com.br';
 $subjectText = $interestLabel . ' - ' . $cleanName;
 $subject = '=?UTF-8?B?' . base64_encode($subjectText) . '?=';
@@ -120,9 +119,12 @@ $orDash = function ($value) {
 $body = "Assunto: {$interestLabel}\n";
 $body .= "Nome: {$cleanName}\n";
 $body .= "E-mail: {$cleanEmail}\n";
-$body .= 'Empresa: ' . $orDash($company) . "\n";
-$body .= 'Segmento: ' . $orDash($industry) . "\n";
-$body .= "Ligações por mês: {$volumeLabel}\n";
+// Empresa, segmento e ligações só são pedidos no contato sobre o piloto.
+if ($interest === 'piloto') {
+    $body .= 'Empresa: ' . $orDash($company) . "\n";
+    $body .= 'Segmento: ' . $orDash($industry) . "\n";
+    $body .= "Ligações por mês: {$volumeLabel}\n";
+}
 $body .= "Idioma do site: {$lang}\n\n";
 $body .= "Mensagem:\n" . $orDash($message) . "\n";
 

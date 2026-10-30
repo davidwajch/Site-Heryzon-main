@@ -5,7 +5,7 @@ export default {
   ogLocale: "pt_BR",
   paths: { home: "/", privacy: "/privacidade/" },
   meta: {
-    title: "Vozzi por Heryzon — agente de voz com IA para atendimento telefônico",
+    title: "Vozzi por Heryzon — assistente virtual de voz para atendimento telefônico",
     description:
       "A Vozzi atende as ligações da sua empresa 24 horas por dia, resolve os pedidos que se repetem e passa o restante para a sua equipe com o resumo da conversa.",
   },
@@ -15,8 +15,6 @@ export default {
     skipLink: "Pular para o conteúdo",
     menuOpen: "Menu",
     menuClose: "Fechar menu",
-    animationPause: "Pausar animação",
-    animationResume: "Retomar animação",
     languages: { pt: "Português", en: "English" },
   },
   nav: {
@@ -33,21 +31,15 @@ export default {
     eyebrow: "VOZZI · UMA SOLUÇÃO HERYZON",
     title: "Menos menu, menos fila. [Mais ligações resolvidas.]",
     subtitle:
-      "A Vozzi é um agente de voz com IA que atende as ligações da sua empresa, 24 horas por dia. Ele entende o que a pessoa precisa, resolve os pedidos que se repetem e passa o restante para a sua equipe, já com o resumo da conversa.",
+      "A Vozzi é um assistente virtual de voz que atende as ligações da sua empresa, 24 horas por dia. Ele entende o que a pessoa precisa, resolve os pedidos que se repetem e passa o restante para a sua equipe, já com o resumo da conversa.",
     primary: "Quero ser piloto",
     secondary: "Ouvir o Bruno",
-    note: "Programa piloto gratuito para as primeiras empresas.",
+    note: "Programa piloto com a primeira validação gratuita.",
   },
   panel: {
-    header: "Ligação em andamento · Bruno",
-    badge: "EXEMPLO ILUSTRATIVO",
-    rows: [
-      ["Motivo identificado:", "remarcar horário"],
-      ["Regra consultada:", "remarcação até 24 h antes"],
-      ["Resolvido na ligação", ""],
-      ["Resumo registrado", ""],
-    ],
-    highlightedRow: 2,
+    header: "Bruno · assistente virtual",
+    badge: "DEMONSTRAÇÃO DE VOZ",
+    caption: "Ouça como o Bruno se apresenta.",
   },
   marquee: ["ATENDE 24 H", "ENTENDE A FALA", "TIRA DÚVIDAS", "AGENDA", "REMARCA", "CANCELA", "FAZ TRIAGEM", "TRANSFERE COM CONTEXTO"],
   challenges: {
@@ -126,13 +118,14 @@ export default {
   pilot: {
     eyebrow: "PROGRAMA PILOTO",
     title: "Seja uma das primeiras empresas [a testar a Vozzi.]",
-    text: "Estamos escolhendo as primeiras empresas para testar a Vozzi na prática, sem custo. Conte como é o atendimento por telefone da sua empresa e a gente entra em contato.",
+    text: "Estamos escolhendo as primeiras empresas para testar a Vozzi na prática. A primeira validação é gratuita: escolhemos juntos um tipo de atendimento, como agendamentos ou dúvidas frequentes, e o assistente atende essas ligações na sua operação. Se quiser validar outros atendimentos depois, combinamos as condições com você antes de começar.",
     steps: [
       "Você manda uma mensagem pelo formulário",
       "A gente conversa sobre o atendimento da sua empresa",
-      "Definimos juntos o escopo do piloto",
-      "O assistente começa a atender as suas ligações",
+      "Escolhemos juntos o primeiro tipo de atendimento a validar",
+      "O assistente atende essas ligações, sem custo para você",
     ],
+    note: "Validações seguintes: condições combinadas antes, sem surpresas.",
     cta: "Quero ser piloto",
   },
   investors: {
@@ -145,12 +138,12 @@ export default {
     eyebrow: "PERGUNTAS FREQUENTES",
     title: "Antes de conversar.",
     items: [
-      ["Quem liga sabe que está falando com uma IA?", "Sim. O assistente se apresenta como assistente virtual logo no início."],
+      ["Quem liga sabe que está falando com um assistente virtual?", "Sim. O Bruno se apresenta como assistente virtual logo no início."],
       ["E se o Bruno não souber responder?", "Ele não inventa. Transfere a ligação para a sua equipe, com o resumo do que já foi conversado."],
       ["Funciona fora do horário comercial?", "Sim. O assistente atende 24 horas por dia, todos os dias."],
       ["Como funciona a integração com os meus sistemas?", "Ela é construída junto com a sua empresa durante o piloto, a partir do que a sua operação usa hoje."],
       ["Atende pelo WhatsApp?", "Ainda não. Hoje a Vozzi atende ligações telefônicas."],
-      ["Quanto custa?", "O piloto é gratuito. O modelo de preço será definido depois dele."],
+      ["Quanto custa?", "A primeira validação do piloto é gratuita. As validações seguintes têm condições combinadas com você antes de começar, sem surpresas."],
     ],
   },
   contact: {
@@ -163,8 +156,19 @@ export default {
       company: "Empresa",
       industry: "Segmento da empresa",
       volume: "Ligações recebidas por mês",
-      interest: "Você quer",
       message: "Mensagem (opcional)",
+    },
+    topic: {
+      legend: "Sobre o que você quer falar?",
+      options: [
+        ["piloto", "Piloto"],
+        ["investimento", "Investidor"],
+      ],
+      // Lido por leitores de tela quando a escolha muda os campos do formulário.
+      announce: {
+        piloto: "Campos para piloto: nome, e-mail, empresa, segmento, ligações por mês e mensagem.",
+        investimento: "Campos para investidor: nome, e-mail e mensagem.",
+      },
     },
     volumeOptions: [
       ["ate-1000", "Até 1.000"],
@@ -172,11 +176,6 @@ export default {
       ["5000-20000", "5.000 a 20.000"],
       ["mais-20000", "Mais de 20.000"],
       ["nao-sei", "Não sei"],
-    ],
-    interestOptions: [
-      ["piloto", "Ser piloto"],
-      ["investimento", "Falar sobre investimento"],
-      ["outro", "Outro assunto"],
     ],
     submit: "Enviar",
     consent: ["Ao enviar, você concorda com o uso dos seus dados conforme a nossa ", "Política de privacidade", "."],
@@ -186,6 +185,7 @@ export default {
   footer: {
     privacy: "Política de privacidade",
     contact: "Contato",
+    other: "Outros assuntos:",
     rights: "© 2026 Heryzon. Todos os direitos reservados.",
   },
   privacyPage: {

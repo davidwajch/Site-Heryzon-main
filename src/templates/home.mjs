@@ -17,13 +17,7 @@ const sectionHead = ({ eyebrow, title }, extra = "") =>
   `<div class="section-head${extra}"><p class="eyebrow">${e(eyebrow)}</p><h2 class="section-title">${twoTone(title)}</h2></div>`;
 
 function hero(t) {
-  const bars = WAVE_BARS.map((h, i) => `<span style="height:${h}px;animation-delay:${((i * 0.11) % 1.21).toFixed(2)}s"></span>`).join("");
-  const rows = t.panel.rows
-    .map(([strong, rest], i) => {
-      const text = rest ? `<strong>${e(strong)}</strong> ${e(rest)}` : `<strong>${e(strong)}</strong>`;
-      return `<li${i === t.panel.highlightedRow ? ' class="is-highlighted"' : ""}><span class="mono-num" aria-hidden="true">${pad(i + 1)}</span><span>${text}</span></li>`;
-    })
-    .join("");
+  const bars = WAVE_BARS.map((h, i) => `<span style="--bar:${h};animation-delay:${((i * 0.11) % 1.21).toFixed(2)}s"></span>`).join("");
   return `<section id="topo" class="container hero">
 <div class="hero-copy">
 <p class="eyebrow">${e(t.hero.eyebrow)}</p>
@@ -37,22 +31,23 @@ function hero(t) {
 </div>
 <div class="call-panel">
 <div class="call-panel-head">
-<span class="call-panel-title" id="call-panel-title"><span class="live-dot" aria-hidden="true"></span>${e(t.panel.header)}</span>
+<span class="call-panel-title"><span class="live-dot" aria-hidden="true"></span>${e(t.panel.header)}</span>
 <span class="badge">${e(t.panel.badge)}</span>
 </div>
 <div class="wave" aria-hidden="true">${bars}</div>
-<ol class="call-steps">${rows}</ol>
-<div class="call-panel-audio"><audio controls preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="call-panel-title"></audio></div>
+<div class="call-panel-audio">
+<p class="call-panel-caption" id="call-panel-caption">${e(t.panel.caption)}</p>
+<audio controls preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="call-panel-caption"></audio>
+</div>
 </div>
 </section>`;
 }
 
 function marquee(t) {
   const run = t.marquee.map((item) => `${e(item)} <span class="marquee-diamond">◆</span>`).join(" ");
-  return `<div class="marquee">
-<p class="visually-hidden">${e(t.marquee.join(" ◆ "))}</p>
+  // Focável para pausar pelo teclado; o hover e o toque também pausam (ver main.js e styles.css).
+  return `<div class="marquee" role="marquee" tabindex="0" aria-label="${e(t.marquee.join(", "))}">
 <div class="marquee-track" aria-hidden="true"><span>${run}</span><span>${run}</span></div>
-<button type="button" class="motion-toggle" aria-label="${e(t.a11y.animationPause)}" data-label-pause="${e(t.a11y.animationPause)}" data-label-resume="${e(t.a11y.animationResume)}"><span class="motion-toggle-icon" aria-hidden="true"></span></button>
 </div>`;
 }
 
@@ -178,7 +173,10 @@ function pilot(t) {
 <p>${e(t.pilot.text)}</p>
 <a class="btn btn-dark" href="#contato" data-interest="piloto">${e(t.pilot.cta)}</a>
 </div>
+<div class="pilot-process">
 <ol class="pilot-steps">${steps}</ol>
+<p class="pilot-note">${e(t.pilot.note)}</p>
+</div>
 </div>
 </section>`;
 }
@@ -208,9 +206,25 @@ ${items}
 </section>`;
 }
 
-function field({ id, label, control, wide = false, required = false }) {
+function field({ id, label, control, wide = false, required = false, topic }) {
   const marker = required ? '<span class="required-mark" aria-hidden="true">*</span>' : "";
-  return `<div class="field${wide ? " field-wide" : ""}"><label for="${id}">${e(label)}${marker}</label>${control}</div>`;
+  const only = topic ? ` data-topic="${topic}"` : "";
+  return `<div class="field${wide ? " field-wide" : ""}"${only}><label for="${id}">${e(label)}${marker}</label>${control}</div>`;
+}
+
+// Piloto ou Investidor: radios nativos (setas do teclado já navegam entre as opções).
+function topicChoice(topic) {
+  const options = topic.options
+    .map(
+      ([value, label], i) =>
+        `<label class="topic-option"><input type="radio" name="interest" value="${value}"${i === 0 ? " checked" : ""}><span>${e(label)}</span></label>`,
+    )
+    .join("");
+  const announce = Object.entries(topic.announce)
+    .map(([value, text]) => ` data-announce-${value}="${e(text)}"`)
+    .join("");
+  return `<fieldset class="topic field-wide"${announce}><legend>${e(topic.legend)}</legend><div class="topic-options">${options}</div></fieldset>
+<p class="visually-hidden" role="status" data-topic-status></p>`;
 }
 
 function contact(t) {
@@ -226,12 +240,12 @@ function contact(t) {
 </div>
 <div class="contact-form-wrap">
 <form id="contact-form" class="contact-form" action="/enviar.php" method="post" data-success="${e(c.success)}" data-error="${e(c.error)}">
+${topicChoice(c.topic)}
 ${field({ id: "f-name", label: c.fields.name, required: true, control: '<input id="f-name" type="text" name="name" autocomplete="name" maxlength="200" pattern=".*\\S.*" required>' })}
 ${field({ id: "f-email", label: c.fields.email, required: true, control: '<input id="f-email" type="email" name="email" autocomplete="email" spellcheck="false" maxlength="200" pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+" required>' })}
-${field({ id: "f-company", label: c.fields.company, control: '<input id="f-company" type="text" name="company" autocomplete="organization" maxlength="200">' })}
-${field({ id: "f-industry", label: c.fields.industry, control: '<input id="f-industry" type="text" name="industry" maxlength="200">' })}
-${field({ id: "f-volume", label: c.fields.volume, control: `<select id="f-volume" name="volume"><option value="">—</option>${options(c.volumeOptions)}</select>` })}
-${field({ id: "f-interest", label: c.fields.interest, control: `<select id="f-interest" name="interest">${options(c.interestOptions)}</select>` })}
+${field({ id: "f-company", label: c.fields.company, topic: "piloto", control: '<input id="f-company" type="text" name="company" autocomplete="organization" maxlength="200">' })}
+${field({ id: "f-industry", label: c.fields.industry, topic: "piloto", control: '<input id="f-industry" type="text" name="industry" maxlength="200">' })}
+${field({ id: "f-volume", label: c.fields.volume, topic: "piloto", control: `<select id="f-volume" name="volume"><option value="">—</option>${options(c.volumeOptions)}</select>` })}
 ${field({ id: "f-message", label: c.fields.message, wide: true, control: '<textarea id="f-message" name="message" rows="4" maxlength="5000"></textarea>' })}
 <input type="hidden" name="lang" value="${lang}">
 <div class="hp-field" aria-hidden="true"><label for="f-website">Website</label><input id="f-website" type="text" name="website" tabindex="-1" autocomplete="off"></div>

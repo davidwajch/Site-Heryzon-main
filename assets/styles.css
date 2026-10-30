@@ -492,20 +492,22 @@ h3 {
 
 /* Abertura */
 
+/* O texto da abertura entra direto na grade (display: contents) para o painel
+   começar na altura do título e terminar na linha abaixo dos botões. */
 .hero {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 28px 56px;
+  align-items: start;
   padding-block: 88px 72px;
 }
 
 .hero-copy {
-  flex: 1 1 520px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
+  display: contents;
+}
+
+.hero-copy > * {
+  grid-column: 1;
 }
 
 .hero-title {
@@ -535,7 +537,11 @@ h3 {
 }
 
 .call-panel {
-  flex: 1 1 420px;
+  grid-column: 2;
+  grid-row: 2 / 6;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -580,19 +586,24 @@ h3 {
 }
 
 .wave {
+  --wave-scale: 2.8;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(3px, 1.1vw, 5px);
-  height: 72px;
-  margin: 24px 20px 8px;
+  gap: clamp(3px, 0.6vw, 6px);
+  min-height: 176px;
+  margin: 20px 20px 0;
+  background: var(--bg);
+  border-radius: 14px;
   overflow: hidden;
 }
 
 .wave span {
   flex: none;
-  width: 5px;
-  border-radius: 3px;
+  width: clamp(4px, 0.55vw, 8px);
+  height: calc(var(--bar) * var(--wave-scale) * 1px);
+  border-radius: 4px;
   background: var(--accent);
   transform-origin: center;
   animation: wave 1.2s ease-in-out infinite;
@@ -608,40 +619,36 @@ h3 {
   }
 }
 
-.call-steps {
+.call-panel-audio {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 8px 20px 20px;
-  list-style: none;
+  gap: 14px;
+  padding: 24px 20px 20px;
 }
 
-.call-steps li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: var(--bg);
-  font-size: 14px;
-  line-height: 1.5;
+.call-panel-caption {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
-.call-steps .mono-num {
-  font-size: 11px;
-  padding-top: 2px;
-}
+@media (max-width: 1043px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-.call-steps li.is-highlighted {
-  background: var(--accent-light);
-}
+  .call-panel {
+    grid-column: 1;
+    grid-row: auto;
+    margin-top: 28px;
+  }
 
-.call-steps li.is-highlighted .mono-num {
-  color: var(--accent-darker);
-}
-
-.call-panel-audio {
-  padding: 0 20px 20px;
+  .wave {
+    --wave-scale: 1.6;
+    flex: none;
+    min-height: 136px;
+  }
 }
 
 audio {
@@ -674,94 +681,20 @@ audio {
   padding-right: 32px;
 }
 
-.marquee:hover .marquee-track,
-.motion-paused .marquee-track,
-.motion-paused .wave span {
+@media (hover: hover) {
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+.marquee:focus-visible .marquee-track,
+.marquee.is-paused .marquee-track {
   animation-play-state: paused;
 }
 
-.motion-toggle {
-  display: none;
-}
-
-/* Esconde a faixa atrás do botão de pausa. */
-.js .marquee::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 92px;
-  background: linear-gradient(to right, rgba(10, 15, 20, 0), var(--text) 32px);
-}
-
-.js .motion-toggle {
-  z-index: 1;
-}
-
-.js .motion-toggle {
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: var(--text);
-  border: 1px solid #55606b;
-  border-radius: 50%;
-  color: #fff;
-  cursor: pointer;
-  transform: translateY(-50%);
-}
-
-.motion-toggle:hover {
-  border-color: #c7ced4;
-}
-
-.marquee :focus-visible {
-  outline-color: #5fd0d6;
-}
-
-.motion-toggle-icon {
-  position: relative;
-  width: 12px;
-  height: 12px;
-}
-
-.motion-toggle-icon::before,
-.motion-toggle-icon::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 4px;
-  height: 12px;
-  background: currentColor;
-  border-radius: 1px;
-}
-
-.motion-toggle-icon::before {
-  left: 1px;
-}
-
-.motion-toggle-icon::after {
-  right: 1px;
-}
-
-.motion-paused .motion-toggle-icon::before {
-  left: 2px;
-  width: 0;
-  height: 0;
-  background: none;
-  border-style: solid;
-  border-width: 6px 0 6px 10px;
-  border-color: transparent transparent transparent currentColor;
-  border-radius: 0;
-}
-
-.motion-paused .motion-toggle-icon::after {
-  display: none;
+.marquee:focus-visible {
+  outline: 3px solid #5fd0d6;
+  outline-offset: -3px;
 }
 
 .marquee-diamond {
@@ -1037,9 +970,12 @@ audio {
   color: var(--accent-darker);
 }
 
+/* Em coluna única a grade vira flex: numa grade, o limite do sticky seria a própria linha do fluxograma. */
 @media (max-width: 980px) {
   .how-grid {
-    grid-template-columns: minmax(0, 1fr);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
   }
 
   .how-flow {
@@ -1048,6 +984,112 @@ audio {
 
   .how-step {
     min-height: 0;
+  }
+}
+
+/* Celular e tablet com altura de sobra: o fluxograma encolhe (só os títulos, até 40% da tela)
+   e fica fixo no topo enquanto os passos rolam por baixo. Precisa do JavaScript que acende
+   as caixas; sem ele, ou com movimento reduzido, vale o bloco acima. */
+@media (max-width: 980px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  /* O fluxograma se solta 200 px antes do fim do último passo, para o passo 05 não passar
+     por baixo dele ainda aceso. A margem da grade devolve o espaço tirado da lista. */
+  .js .how-grid {
+    gap: 8px;
+    margin-bottom: 200px;
+  }
+
+  .js .how-steps {
+    margin-bottom: -200px;
+  }
+
+  .js .how-flow {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 1;
+    max-height: 40vh;
+    max-height: 40svh;
+    padding-block: 6px;
+    background: var(--surface);
+  }
+
+  .js .flow {
+    padding: 8px 10px;
+    border-radius: 16px;
+  }
+
+  .js .flow-node-text {
+    display: none;
+  }
+
+  .js .flow-node,
+  .js .flow-node-main,
+  .js .flow-node-outside {
+    min-width: 0;
+    padding: 2px 8px;
+    border-radius: 8px;
+  }
+
+  .js .flow-node-main {
+    padding-inline: 18px;
+  }
+
+  .js .flow-node-title,
+  .js .flow-node-main .flow-node-title {
+    font-size: clamp(10.5px, 1.8vh, 12.5px);
+    line-height: 1.2;
+  }
+
+  .js .flow-line {
+    height: 6px;
+  }
+
+  .js .flow-line-short {
+    height: 4px;
+  }
+
+  .js .flow-line-grow {
+    min-height: 4px;
+  }
+
+  .js .flow-split,
+  .js .flow-join {
+    height: 8px;
+  }
+
+  .js .flow-branch:first-child {
+    flex-grow: 2;
+  }
+
+  .js .flow-branch:last-child {
+    flex-grow: 1;
+  }
+
+  .js .flow-split,
+  .js .flow-join {
+    margin: 0 calc(100% / 6) 0 calc(100% / 3);
+  }
+
+  .js .flow-group {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 3px;
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .js .flow-group > .flow-group-label,
+  .js .flow-group > [data-node="kb"],
+  .js .flow-group > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  .js .flow-group-label {
+    font-size: 9px;
+    line-height: 1.2;
+  }
+
+  .js .flow-group-label-muted {
+    margin-bottom: 1px;
   }
 }
 
@@ -1321,9 +1363,22 @@ audio {
   align-self: flex-start;
 }
 
-.pilot-steps {
+.pilot-process {
   flex: 1 1 440px;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pilot-note {
+  padding-inline: 4px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #3d5c5d;
+}
+
+.pilot-steps {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1494,21 +1549,101 @@ audio {
 }
 
 .contact-form {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
   gap: 18px;
 }
 
 .field {
-  flex: 1 1 240px;
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.field-wide {
-  flex-basis: 100%;
+.field-wide,
+.form-actions,
+.form-error {
+  grid-column: 1 / -1;
+}
+
+.topic {
+  min-width: 0;
+  margin: 0 0 6px;
+  padding: 0;
+  border: 0;
+}
+
+.topic legend {
+  margin-bottom: 10px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.topic-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.topic-option {
+  position: relative;
+  flex: 1 1 140px;
+}
+
+.topic-option input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.topic-option span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 20px;
+  background: var(--bg);
+  border: 1px solid var(--field-border);
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.topic-option span::before {
+  content: "";
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.topic-option:hover span {
+  border-color: var(--accent-dark);
+}
+
+.topic-option input:checked + span {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: #fff;
+}
+
+.topic-option input:checked + span::before {
+  background: currentColor;
+  box-shadow: inset 0 0 0 2px var(--accent-dark);
+}
+
+.topic-option input:focus-visible + span {
+  outline: 3px solid var(--accent-dark);
+  outline-offset: 2px;
 }
 
 .field label {
@@ -1567,7 +1702,6 @@ audio {
 }
 
 .form-actions {
-  flex: 1 1 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1611,7 +1745,6 @@ audio {
 }
 
 .form-error {
-  flex-basis: 100%;
   padding: 14px 16px;
   background: var(--error-bg);
   border: 1px solid var(--error);
@@ -1667,8 +1800,20 @@ audio {
 }
 
 .footer-product,
-.footer-rights {
+.footer-rights,
+.footer-other {
   color: #8fa0ac;
+}
+
+.footer-other a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #c7ced4;
+}
+
+.footer-other a:hover {
+  color: #fff;
 }
 
 .footer-nav {
@@ -1778,8 +1923,11 @@ audio {
 
 @media (max-width: 719px) {
   .hero {
-    gap: 40px;
     padding-block: 48px 56px;
+  }
+
+  .call-panel {
+    margin-top: 12px;
   }
 
   .section {
@@ -1880,15 +2028,11 @@ audio {
     animation: none;
   }
 
-  .js .motion-toggle,
-  .js .marquee::after {
-    display: none;
-  }
-
   .flow-node,
   .how-step,
   .faq-icon,
-  .btn {
+  .btn,
+  .topic-option span {
     transition: none;
   }
 }

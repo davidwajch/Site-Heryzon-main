@@ -5,7 +5,7 @@ export default {
   ogLocale: "en_US",
   paths: { home: "/en/", privacy: "/en/privacy/" },
   meta: {
-    title: "Vozzi by Heryzon — AI voice agent for phone support",
+    title: "Vozzi by Heryzon — virtual voice assistant for phone support",
     description:
       "Vozzi answers your company's calls 24 hours a day, handles the repetitive requests and hands the rest to your team with a summary of the call.",
   },
@@ -15,8 +15,6 @@ export default {
     skipLink: "Skip to content",
     menuOpen: "Menu",
     menuClose: "Close menu",
-    animationPause: "Pause animation",
-    animationResume: "Resume animation",
     languages: { pt: "Português", en: "English" },
   },
   nav: {
@@ -33,21 +31,15 @@ export default {
     eyebrow: "VOZZI · BY HERYZON",
     title: "Fewer menus, shorter queues. [More calls resolved.]",
     subtitle:
-      "Vozzi is an AI voice agent that answers your company's phone calls, 24 hours a day. It understands what callers need, handles the repetitive requests and hands the rest to your team with a summary of the call.",
+      "Vozzi is a virtual voice assistant that answers your company's phone calls, 24 hours a day. It understands what callers need, handles the repetitive requests and hands the rest to your team with a summary of the call.",
     primary: "Join the pilot",
     secondary: "Hear Bruno",
-    note: "Free pilot program for our first partner companies.",
+    note: "Pilot program with your first validation free of charge.",
   },
   panel: {
-    header: "Call in progress · Bruno",
-    badge: "ILLUSTRATIVE EXAMPLE",
-    rows: [
-      ["Reason identified:", "reschedule"],
-      ["Rule checked:", "rescheduling up to 24 h before"],
-      ["Resolved during the call", ""],
-      ["Summary logged", ""],
-    ],
-    highlightedRow: 2,
+    header: "Bruno · virtual assistant",
+    badge: "VOICE DEMO",
+    caption: "Hear how Bruno introduces himself.",
   },
   marquee: ["ANSWERS 24/7", "UNDERSTANDS SPEECH", "ANSWERS QUESTIONS", "BOOKS", "RESCHEDULES", "CANCELS", "TRIAGES", "HANDS OFF WITH CONTEXT"],
   challenges: {
@@ -126,13 +118,14 @@ export default {
   pilot: {
     eyebrow: "PILOT PROGRAM",
     title: "Be one of the first companies [to try Vozzi.]",
-    text: "We're selecting our first companies to try Vozzi in practice, at no cost. Tell us how your company handles phone calls and we'll get in touch.",
+    text: "We're selecting our first companies to try Vozzi in practice. Your first validation is free: together we pick one type of call, such as scheduling or common questions, and the assistant handles those calls in your operation. If you'd like to validate other types of calls afterwards, we'll agree on the terms with you before we start.",
     steps: [
       "You send us a message through the form",
       "We talk about how your company handles calls",
-      "We define the pilot scope together",
-      "The assistant starts answering your calls",
+      "Together we pick the first type of call to validate",
+      "The assistant handles those calls, at no cost to you",
     ],
+    note: "Further validations: terms agreed in advance, no surprises.",
     cta: "Join the pilot",
   },
   investors: {
@@ -145,12 +138,12 @@ export default {
     eyebrow: "FAQ",
     title: "Before we talk.",
     items: [
-      ["Do callers know they're talking to an AI?", "Yes. The assistant introduces itself as a virtual assistant right at the start."],
+      ["Do callers know they're talking to a virtual assistant?", "Yes. Bruno introduces itself as a virtual assistant right at the start."],
       ["What if Bruno doesn't know the answer?", "It doesn't make things up. It transfers the call to your team, with a summary of the conversation so far."],
       ["Does it work after hours?", "Yes. The assistant answers 24 hours a day, every day."],
       ["How does it connect to my systems?", "We build the integration with your company during the pilot, based on the tools your operation already uses."],
       ["Does it work on WhatsApp?", "Not yet. Today Vozzi handles phone calls."],
-      ["How much does it cost?", "The pilot is free. Pricing will be set after the pilot."],
+      ["How much does it cost?", "The first pilot validation is free. Further validations have terms agreed with you before we start, with no surprises."],
     ],
   },
   contact: {
@@ -163,8 +156,19 @@ export default {
       company: "Company",
       industry: "Industry",
       volume: "Incoming calls per month",
-      interest: "I'm interested in",
       message: "Message (optional)",
+    },
+    topic: {
+      legend: "What would you like to talk about?",
+      options: [
+        ["piloto", "Pilot"],
+        ["investimento", "Investor"],
+      ],
+      // Read by screen readers when the choice changes the form fields.
+      announce: {
+        piloto: "Pilot fields: name, email, company, industry, calls per month and message.",
+        investimento: "Investor fields: name, email and message.",
+      },
     },
     volumeOptions: [
       ["ate-1000", "Up to 1,000"],
@@ -172,11 +176,6 @@ export default {
       ["5000-20000", "5,000–20,000"],
       ["mais-20000", "Over 20,000"],
       ["nao-sei", "Not sure"],
-    ],
-    interestOptions: [
-      ["piloto", "Joining the pilot"],
-      ["investimento", "Investing"],
-      ["outro", "Something else"],
     ],
     submit: "Send",
     consent: ["By sending, you agree to the use of your data as described in our ", "Privacy policy", "."],
@@ -186,6 +185,7 @@ export default {
   footer: {
     privacy: "Privacy policy",
     contact: "Contact",
+    other: "Other matters:",
     rights: "© 2026 Heryzon. All rights reserved.",
   },
   privacyPage: {

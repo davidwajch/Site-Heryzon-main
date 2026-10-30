@@ -62,7 +62,7 @@ export async function buildSite(outDir = ROOT) {
   ]) {
     pages.push({
       file: path.join(t.paths.home, "index.html"),
-      html: layout({ t, pageKey: "home", title: t.meta.title, description: t.meta.description, alternates: homeAlternates, assets, body: home(t) }),
+      html: layout({ t, pageKey: "home", title: t.meta.title, description: t.meta.description, alternates: homeAlternates, assets, email: COMPANY.email, body: home(t) }),
     });
 
     const markdown = fillCompany(await readFile(path.join(SRC, "content", policyFile), "utf8"), t.lang);
@@ -75,6 +75,7 @@ export async function buildSite(outDir = ROOT) {
         description: t.privacyPage.description,
         alternates: privacyAlternates,
         assets,
+        email: COMPANY.email,
         body: privacy({ markdown, email: COMPANY.email }),
       }),
     });

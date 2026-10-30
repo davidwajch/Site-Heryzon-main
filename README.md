@@ -1,6 +1,6 @@
 # Heryzon · Vozzi
 
-Site da Heryzon (heryzon.com.br) que apresenta a Vozzi, agente de voz com IA. O assistente da demonstração se chama Bruno.
+Site da Heryzon (heryzon.com.br) que apresenta a Vozzi, assistente virtual de voz. O assistente da demonstração se chama Bruno.
 Português é o idioma padrão e o inglês fica em `/en/`.
 
 ## Estrutura
@@ -9,10 +9,10 @@ O que vai para o servidor fica na raiz do repositório:
 
 - `index.html`, `en/index.html`: página principal em PT e EN (geradas).
 - `privacidade/index.html`, `en/privacy/index.html`: política de privacidade em PT e EN (geradas).
-- `assets/styles.css`, `assets/main.js`: estilos e comportamento (fluxograma, seletor de idioma, formulário).
+- `assets/styles.css`, `assets/main.js`: estilos e comportamento (fluxograma, faixa corrida, seletor de idioma, formulário Piloto/Investidor).
 - `assets/fonts/`: Space Grotesk, Manrope e JetBrains Mono em `.woff2`, servidas pelo próprio site, com as licenças OFL.
 - `audio/bruno-apresentacao.mp3`: demonstração de voz do Bruno.
-- `enviar.php`: recebe o formulário e envia para contato@heryzon.com.br com `mail()`. Aceita no máximo 5 envios por IP a cada 10 minutos; o registro fica na pasta temporária do servidor, com o IP guardado só como hash.
+- `enviar.php`: recebe o formulário e envia para contato@heryzon.com.br com `mail()`. Só aceita os assuntos `piloto` e `investimento`. Aceita no máximo 5 envios por IP a cada 10 minutos; o registro fica na pasta temporária do servidor, com o IP guardado só como hash.
 - `.htaccess`: redireciona as páginas antigas para `/privacidade/` e bloqueia `src/`, `tests/` e `docs/`.
 - `robots.txt`, `sitemap.xml`, `favicon.svg`.
 
@@ -30,11 +30,13 @@ Requer Node 20 ou mais novo. Não há dependências para instalar.
 
 ```bash
 npm run build      # gera as páginas a partir de src/
-npm test           # testes do gerador
+npm test           # testes do gerador, do JavaScript (no Chrome) e do enviar.php (no PHP)
 npm run dev        # http://127.0.0.1:8080, formulário simulando sucesso
 FORM_MOCK=error npm run dev   # formulário simulando erro
 FORM_MOCK=limit npm run dev   # formulário simulando limite de envios atingido
 ```
+
+Os testes de navegador usam o Chrome instalado (ou o caminho em `CHROME_PATH`) e os do `enviar.php` usam o `php` instalado. Sem PHP, dá para usar o Docker: `PHP_DOCKER_IMAGE=php:8.2-cli npm test`. O que não estiver disponível é pulado, com aviso.
 
 Depois de mudar textos, modelos, CSS ou JS, rode `npm run build`. As páginas geradas e a versão dos arquivos de CSS e JS são atualizadas juntas.
 

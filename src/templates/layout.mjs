@@ -65,7 +65,7 @@ ${langSwitch({ t, alternates })}
 </header>`;
 }
 
-function footer({ t, alternates, onHome }) {
+function footer({ t, alternates, onHome, email }) {
   const base = onHome ? "" : t.paths.home;
   return `<footer class="site-footer">
 <div class="container footer-inner">
@@ -75,12 +75,13 @@ function footer({ t, alternates, onHome }) {
 <a href="${base}#contato">${e(t.footer.contact)}</a>
 ${langSwitch({ t, alternates, className: "lang-switch lang-switch-footer" })}
 </nav>
+<p class="footer-other">${e(t.footer.other)} <a href="mailto:${email}">${email}</a></p>
 <span class="footer-rights">${e(t.footer.rights)}</span>
 </div>
 </footer>`;
 }
 
-export function layout({ t, pageKey, title, description, alternates, assets, body }) {
+export function layout({ t, pageKey, title, description, alternates, assets, email, body }) {
   const onHome = pageKey === "home";
   return `<!doctype html>
 <html lang="${t.lang}">
@@ -91,7 +92,7 @@ ${header({ t, alternates, onHome })}
 <main id="conteudo">
 ${body}
 </main>
-${footer({ t, alternates, onHome })}
+${footer({ t, alternates, onHome, email })}
 </body>
 </html>
 `;
