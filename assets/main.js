@@ -103,7 +103,15 @@
     return flowBottom + (window.innerHeight - flowBottom) / 2;
   }
 
+  // Fixo = encostado no topo; antes de chegar lá ou depois de soltar, ele está acima ou abaixo disso.
+  function updateStuck() {
+    const top = parseFloat(getComputedStyle(howFlow).top) || 0;
+    const stuck = compactFlow.matches && Math.abs(howFlow.getBoundingClientRect().top - top) < 1;
+    howFlow.classList.toggle("is-stuck", stuck);
+  }
+
   function updateActiveStep() {
+    updateStuck();
     const line = readingLine();
     let step = 1;
     steps.forEach((el) => {
@@ -125,6 +133,15 @@
     updateActiveStep();
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
     window.addEventListener("resize", scheduleUpdate);
+  }
+
+  // As ondas da abertura só se movem enquanto o áudio do painel toca.
+  const callPanel = document.querySelector(".call-panel");
+  const panelAudio = callPanel?.querySelector("audio");
+  if (panelAudio) {
+    const setPlaying = (playing) => callPanel.classList.toggle("is-playing", playing);
+    panelAudio.addEventListener("playing", () => setPlaying(true));
+    ["pause", "ended", "waiting", "emptied"].forEach((type) => panelAudio.addEventListener(type, () => setPlaying(false)));
   }
 
   // Só um player toca por vez.

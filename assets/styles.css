@@ -492,22 +492,20 @@ h3 {
 
 /* Abertura */
 
-/* O texto da abertura entra direto na grade (display: contents) para o painel
-   começar na altura do título e terminar na linha abaixo dos botões. */
 .hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-  gap: 28px 56px;
-  align-items: start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 56px;
   padding-block: 88px 72px;
 }
 
 .hero-copy {
-  display: contents;
-}
-
-.hero-copy > * {
-  grid-column: 1;
+  flex: 1 1 520px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .hero-title {
@@ -537,11 +535,7 @@ h3 {
 }
 
 .call-panel {
-  grid-column: 2;
-  grid-row: 2 / 6;
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
+  flex: 1 1 420px;
   min-width: 0;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -586,13 +580,12 @@ h3 {
 }
 
 .wave {
-  --wave-scale: 2.8;
-  flex: 1 1 auto;
+  --wave-scale: 2.4;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: clamp(3px, 0.6vw, 6px);
-  min-height: 176px;
+  height: 190px;
   margin: 20px 20px 0;
   background: var(--bg);
   border-radius: 14px;
@@ -606,16 +599,22 @@ h3 {
   border-radius: 4px;
   background: var(--accent);
   transform-origin: center;
-  animation: wave 1.2s ease-in-out infinite;
+  animation: wave 1.2s ease-in-out infinite paused;
+}
+
+/* As ondas só se movem enquanto o áudio do painel toca (classe posta pelo main.js).
+   Pausada, a animação congela onde estava, sem salto. */
+.call-panel.is-playing .wave span {
+  animation-play-state: running;
 }
 
 @keyframes wave {
   0%,
   100% {
-    transform: scaleY(0.35);
+    transform: scaleY(1);
   }
   50% {
-    transform: scaleY(1);
+    transform: scaleY(0.35);
   }
 }
 
@@ -634,20 +633,9 @@ h3 {
 }
 
 @media (max-width: 1043px) {
-  .hero {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .call-panel {
-    grid-column: 1;
-    grid-row: auto;
-    margin-top: 28px;
-  }
-
   .wave {
-    --wave-scale: 1.6;
-    flex: none;
-    min-height: 136px;
+    --wave-scale: 1;
+    height: 72px;
   }
 }
 
@@ -1010,6 +998,24 @@ audio {
     max-height: 40svh;
     padding-block: 6px;
     background: var(--surface);
+  }
+
+  /* Sombra na borda de baixo só enquanto o fluxograma está fixo (classe is-stuck, do main.js). */
+  .js .how-flow::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    height: 14px;
+    background: linear-gradient(rgba(10, 15, 20, 0.14), rgba(10, 15, 20, 0));
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .js .how-flow.is-stuck::after {
+    opacity: 1;
   }
 
   .js .flow {
@@ -1923,11 +1929,8 @@ audio {
 
 @media (max-width: 719px) {
   .hero {
+    gap: 40px;
     padding-block: 48px 56px;
-  }
-
-  .call-panel {
-    margin-top: 12px;
   }
 
   .section {

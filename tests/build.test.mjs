@@ -144,6 +144,14 @@ test("contact form fields, values and preset buttons", () => {
   assert.match(pages.en, /href="\/en\/privacy\/">Privacy policy<\/a>/);
 });
 
+test("Bruno is \"he\" in English", () => {
+  assert.match(pages.en, /Yes\. Bruno introduces himself as a virtual assistant right at the start\./);
+  assert.match(pages.en, /He doesn&#39;t make things up\. He transfers the call to your team|He doesn't make things up\. He transfers the call to your team/);
+  assert.match(pages.en, /Without a rule, he doesn&#39;t improvise\.|Without a rule, he doesn't improvise\./);
+  assert.match(pages.en, /Hear how Bruno introduces himself\./);
+  assert.doesNotMatch(pages.en, /Bruno introduces itself|It doesn&#39;t make things up|It doesn't make things up/);
+});
+
 test("footer: other matters by e-mail on every page", () => {
   for (const [key, label] of [["pt", "Outros assuntos:"], ["privacidade", "Outros assuntos:"], ["en", "Other matters:"], ["privacy", "Other matters:"]]) {
     assert.match(pages[key], new RegExp(`<p class="footer-other">${label} <a href="mailto:contato@heryzon.com.br">contato@heryzon.com.br</a></p>`), key);

@@ -155,6 +155,48 @@ test("Faixa corrida: o toque pausa e retoma; o clique do mouse não prende a pau
   await page.close();
 });
 
+test("Ondas da abertura só se movem enquanto o áudio do painel toca", { skip }, async () => {
+  const page = await browser.newPage({ width: 1280, height: 900 });
+  await page.goto(`${base}/`);
+  const waves = () => page.evaluate(`getComputedStyle(document.querySelector(".wave span")).animationPlayState`);
+  const waitFor = (expression) =>
+    page.evaluate(`new Promise((resolve, reject) => {
+      const start = Date.now();
+      (function check() {
+        if (${expression}) return resolve(true);
+        if (Date.now() - start > 10000) return reject(new Error("tempo esgotado: ${expression.replace(/"/g, "'")}"));
+        setTimeout(check, 50);
+      })();
+    })`);
+  assert.equal(await waves(), "paused", "paradas ao carregar");
+
+  await page.evaluate(`document.querySelector(".call-panel audio").play()`);
+  await waitFor(`document.querySelector(".call-panel").classList.contains("is-playing")`);
+  assert.equal(await waves(), "running", "tocando");
+
+  await page.evaluate(`document.querySelector(".call-panel audio").pause()`);
+  await waitFor(`!document.querySelector(".call-panel").classList.contains("is-playing")`);
+  assert.equal(await waves(), "paused", "pausado");
+
+  await page.evaluate(`(async () => {
+    const audio = document.querySelector(".call-panel audio");
+    // O servidor local não atende Range, então pular para o fim não funciona; acelera até o fim.
+    audio.playbackRate = 16;
+    await audio.play();
+  })()`);
+  await waitFor(`document.querySelector(".call-panel audio").ended`);
+  await page.evaluate(`document.querySelector(".call-panel audio").playbackRate = 1`);
+  assert.equal(await waves(), "paused", "terminado");
+
+  // Tocar o outro player pausa o do painel, e as ondas param junto.
+  await page.evaluate(`document.querySelector(".call-panel audio").currentTime = 0; document.querySelector(".call-panel audio").play()`);
+  await waitFor(`document.querySelector(".call-panel").classList.contains("is-playing")`);
+  await page.evaluate(`document.querySelector("#ouca audio").play()`);
+  await waitFor(`!document.querySelector(".call-panel").classList.contains("is-playing")`);
+  assert.equal(await waves(), "paused", "outro player tocando");
+  await page.close();
+});
+
 // Mesma tabela da especificação: passo -> caixas acesas.
 const FLOW = { 1: ["cliente"], 2: ["triagem"], 3: ["kb"], 4: ["registro", "resolve"], 5: ["humano", "registro"] };
 
@@ -170,9 +212,10 @@ for (const [width, height] of [
       return [Math.round(grid.top + scrollY - innerHeight), Math.round(grid.bottom + scrollY)];
     })()`);
     const order = [];
+    let sawStuck = false;
     for (let y = start; y <= end; y += 20) {
       await page.scrollTo(y);
-      const { active, lit, coveredBy } = await page.evaluate(`(() => {
+      const { active, lit, coveredBy, stuck, shadow } = await page.evaluate(`(() => {
         const flow = document.querySelector(".how-flow").getBoundingClientRect();
         const step = document.querySelector(".how-step.is-active");
         const box = step.getBoundingClientRect();
@@ -181,13 +224,18 @@ for (const [width, height] of [
           active: Number(step.dataset.step),
           lit: [...new Set([...document.querySelectorAll(".flow-node.is-lit")].map((n) => n.dataset.node))].sort(),
           coveredBy: stuck && ${width} <= 980 ? Math.max(0, flow.bottom - box.top) : 0,
+          stuck: stuck && ${width} <= 980,
+          shadow: document.querySelector(".how-flow").classList.contains("is-stuck"),
         };
       })()`);
       assert.deepEqual(lit, FLOW[active], `y=${y}, passo ${active}`);
       assert.equal(coveredBy, 0, `y=${y}: o passo ${active} aceso está embaixo do fluxograma`);
+      assert.equal(shadow, stuck, `y=${y}: sombra ${shadow ? "sem" : "faltando com"} o fluxograma fixo`);
       if (order.at(-1) !== active) order.push(active);
+      sawStuck ||= stuck;
     }
     assert.deepEqual(order, [1, 2, 3, 4, 5]);
+    if (width <= 980) assert.ok(sawStuck, "o fluxograma chegou a ficar fixo");
     await page.close();
   });
 }

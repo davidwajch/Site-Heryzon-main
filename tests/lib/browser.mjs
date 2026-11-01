@@ -24,7 +24,16 @@ export async function launchBrowser() {
   const userDataDir = await mkdtemp(path.join(tmpdir(), "heryzon-chrome-"));
   const proc = spawn(
     chromePath,
-    ["--headless=new", "--remote-debugging-pipe", "--no-first-run", "--no-default-browser-check", `--user-data-dir=${userDataDir}`, "about:blank"],
+    [
+      "--headless=new",
+      "--remote-debugging-pipe",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--autoplay-policy=no-user-gesture-required",
+      "--mute-audio",
+      `--user-data-dir=${userDataDir}`,
+      "about:blank",
+    ],
     { stdio: ["ignore", "ignore", "pipe", "pipe", "pipe"] },
   );
   let stderr = "";

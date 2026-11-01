@@ -109,7 +109,7 @@ export default {
     eyebrow: "CONTROL",
     title: "Your company decides [what the assistant says.]",
     items: [
-      ["Approved rules", "Bruno only answers and acts on the rules and documents your company has approved. Without a rule, it doesn't improvise."],
+      ["Approved rules", "Bruno only answers and acts on the rules and documents your company has approved. Without a rule, he doesn't improvise."],
       ["A person always within reach", "Anything outside the rules goes to your team, with a summary of the call."],
       ["Everything logged", "Every call produces a record of the reason, what was done and a summary."],
       ["Transparency", "The assistant introduces itself as a virtual assistant. Nobody is misled."],
@@ -138,8 +138,8 @@ export default {
     eyebrow: "FAQ",
     title: "Before we talk.",
     items: [
-      ["Do callers know they're talking to a virtual assistant?", "Yes. Bruno introduces itself as a virtual assistant right at the start."],
-      ["What if Bruno doesn't know the answer?", "It doesn't make things up. It transfers the call to your team, with a summary of the conversation so far."],
+      ["Do callers know they're talking to a virtual assistant?", "Yes. Bruno introduces himself as a virtual assistant right at the start."],
+      ["What if Bruno doesn't know the answer?", "He doesn't make things up. He transfers the call to your team, with a summary of the conversation so far."],
       ["Does it work after hours?", "Yes. The assistant answers 24 hours a day, every day."],
       ["How does it connect to my systems?", "We build the integration with your company during the pilot, based on the tools your operation already uses."],
       ["Does it work on WhatsApp?", "Not yet. Today Vozzi handles phone calls."],
