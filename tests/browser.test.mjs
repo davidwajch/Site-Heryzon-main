@@ -258,13 +258,73 @@ test("Player próprio: play/pausa, setas de 5 s, clique na barra e tempo 0:00 / 
   })()`);
   assert.equal((await state(panel)).text, "0:12 / 0:24");
 
-  // "Play Bruno" da abertura leva ao player da seção e começa a tocar.
-  await page.evaluate(`document.querySelector('.hero [data-play-audio="#ouca"]').click()`);
+  // O player de "Ouça o Bruno" continua independente.
+  await page.evaluate(`document.querySelector("${hear} .audio-toggle").click()`);
   await page.evaluate(`new Promise((r) => { const a = document.querySelector("${hear} audio"); a.paused ? a.addEventListener("play", r, { once: true }) : r(); })`);
   s = await state(hear);
   assert.equal(s.playing, true);
   assert.equal(s.label, en.a11y.audioPause);
-  assert.equal(await page.evaluate("location.hash"), "#ouca");
+  await page.close();
+});
+
+// Estado do botão da abertura e do áudio do painel.
+const HERO_STATE = `(() => {
+  const button = document.querySelector(".hero-play");
+  const panel = document.querySelector(".call-panel").getBoundingClientRect();
+  return {
+    tag: button.tagName,
+    label: button.textContent,
+    panelPlaying: !document.querySelector(".call-panel audio").paused,
+    hearPlaying: !document.querySelector("#ouca audio").paused,
+    panelVisible: panel.top >= 0 && panel.bottom <= innerHeight,
+    scrollY: Math.round(scrollY),
+    hash: location.hash,
+  };
+})()`;
+
+for (const [width, height, lang, play, pause] of [
+  [1280, 900, "pt", pt.hero.secondary, pt.hero.secondaryPause],
+  [375, 812, "en", en.hero.secondary, en.hero.secondaryPause],
+]) {
+  test(`"${play}" toca e pausa o áudio do painel no lugar (${width}×${height})`, { skip }, async () => {
+    const page = await browser.newPage({ width, height });
+    await page.goto(`${base}${lang === "en" ? "/en/" : "/"}`);
+    let s = await page.evaluate(HERO_STATE);
+    assert.equal(s.tag, "BUTTON", "com JavaScript o link vira botão");
+    assert.equal(s.label, play);
+    assert.equal(s.panelVisible, width > 980, "no celular o painel começa fora da tela");
+
+    await page.evaluate(`document.querySelector(".hero-play").click()`);
+    await page.evaluate(`new Promise((r) => setTimeout(r, 900))`);
+    s = await page.evaluate(HERO_STATE);
+    assert.equal(s.panelPlaying, true);
+    assert.equal(s.hearPlaying, false);
+    assert.equal(s.label, pause);
+    assert.equal(s.panelVisible, true, "o painel fica inteiro na tela");
+    assert.equal(s.hash, "", "não vai para a seção Ouça o Bruno");
+    assert.equal(await page.evaluate(`getComputedStyle(document.querySelector(".wave span")).animationPlayState`), "running");
+
+    await page.evaluate(`document.querySelector(".hero-play").click()`);
+    s = await page.evaluate(HERO_STATE);
+    assert.equal(s.panelPlaying, false);
+    assert.equal(s.label, play);
+
+    // O botão acompanha o player do próprio painel.
+    await page.evaluate(`document.querySelector(".call-panel .audio-toggle").click()`);
+    await page.evaluate(`new Promise((r) => setTimeout(r, 200))`);
+    assert.equal((await page.evaluate(HERO_STATE)).label, pause);
+    await page.close();
+  });
+}
+
+test("Com reduzir movimento, o botão da abertura rola até o painel sem animação", { skip }, async () => {
+  const page = await browser.newPage({ width: 375, height: 812, reducedMotion: true });
+  await page.goto(`${base}/`);
+  const before = await page.evaluate(HERO_STATE);
+  const after = await page.evaluate(`(() => { document.querySelector(".hero-play").click(); return ${HERO_STATE}; })()`);
+  assert.equal(before.scrollY, 0);
+  assert.equal(after.panelVisible, true, "já no lugar logo depois do clique");
+  assert.equal(await page.evaluate(`getComputedStyle(document.querySelector(".wave span")).animationName`), "none");
   await page.close();
 });
 

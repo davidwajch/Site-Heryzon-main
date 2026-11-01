@@ -162,8 +162,9 @@ test("custom audio player in both places, native fallback without menu options",
     assert.equal((html.match(new RegExp(`<button type="button" class="audio-toggle" aria-label="${play}" data-label-play="${play}" data-label-pause="${pause}">`, "g")) || []).length, 2);
     assert.equal((html.match(new RegExp(`role="slider" tabindex="0" aria-label="${progress}" aria-valuemin="0" aria-valuemax="24" aria-valuenow="0" aria-valuetext="0:00 / 0:24"`, "g")) || []).length, 2);
     assert.match(html, /class="audio-player audio-player-dark"/);
-    assert.match(html, /class="btn btn-secondary" href="#ouca" data-play-audio="#ouca"/);
   }
+  assert.match(pages.pt, /<a class="btn btn-secondary hero-play" href="#ouca" data-hero-play data-label-play="Ouvir o Bruno" data-label-pause="Pausar o Bruno">/);
+  assert.match(pages.en, /<a class="btn btn-secondary hero-play" href="#ouca" data-hero-play data-label-play="Hear Bruno" data-label-pause="Pause Bruno">/);
 });
 
 test("footer: other matters by e-mail on every page", () => {

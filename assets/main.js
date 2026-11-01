@@ -219,10 +219,39 @@
     });
   });
 
-  // "Ouvir o Bruno" na abertura: leva até o player (pelo link) e já começa a tocar.
-  document.querySelectorAll("[data-play-audio]").forEach((link) => {
-    link.addEventListener("click", () => document.querySelector(`${link.dataset.playAudio} audio`)?.play());
-  });
+  // "Ouvir o Bruno" na abertura toca e pausa o áudio do painel, no lugar. Sem JavaScript continua
+  // sendo um link para "Ouça o Bruno"; com JavaScript vira um botão.
+  const heroLink = document.querySelector("[data-hero-play]");
+  if (heroLink && panelAudio) {
+    const heroButton = document.createElement("button");
+    heroButton.type = "button";
+    heroButton.className = heroLink.className;
+    heroButton.innerHTML = heroLink.innerHTML;
+    heroLink.replaceWith(heroButton);
+    const heroLabel = heroButton.querySelector(".hero-play-label");
+
+    const syncHero = () => {
+      const playing = !panelAudio.paused;
+      heroButton.classList.toggle("is-playing", playing);
+      heroLabel.textContent = playing ? heroLink.dataset.labelPause : heroLink.dataset.labelPlay;
+    };
+    ["play", "pause", "ended"].forEach((type) => panelAudio.addEventListener(type, syncHero));
+
+    heroButton.addEventListener("click", () => {
+      if (!panelAudio.paused) {
+        panelAudio.pause();
+        return;
+      }
+      // No celular o painel fica abaixo dos botões: rola até ele. O play sai no próprio clique,
+      // junto com a rolagem, porque o Safari pode bloquear um play disparado depois.
+      const box = callPanel.getBoundingClientRect();
+      const headerBottom = header && getComputedStyle(header).position === "sticky" ? header.getBoundingClientRect().bottom : 0;
+      if (box.top < headerBottom || box.bottom > window.innerHeight) {
+        callPanel.scrollIntoView({ behavior: reducedMotion ? "instant" : "smooth", block: "center" });
+      }
+      panelAudio.play();
+    });
+  }
 
   // Só um player toca por vez.
   const players = document.querySelectorAll("audio");

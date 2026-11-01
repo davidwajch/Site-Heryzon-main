@@ -37,6 +37,7 @@ export default {
       "Vozzi is a virtual voice assistant that answers your company's phone calls, 24 hours a day. It understands what callers need, handles the repetitive requests and hands the rest to your team with a summary of the call.",
     primary: "Join the pilot",
     secondary: "Hear Bruno",
+    secondaryPause: "Pause Bruno",
     note: "Pilot program with your first validation free of charge.",
   },
   panel: {

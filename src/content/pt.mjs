@@ -37,6 +37,7 @@ export default {
       "A Vozzi é um assistente virtual de voz que atende as ligações da sua empresa, 24 horas por dia. Ele entende o que a pessoa precisa, resolve os pedidos que se repetem e passa o restante para a sua equipe, já com o resumo da conversa.",
     primary: "Quero ser piloto",
     secondary: "Ouvir o Bruno",
+    secondaryPause: "Pausar o Bruno",
     note: "Programa piloto com a primeira validação gratuita.",
   },
   panel: {

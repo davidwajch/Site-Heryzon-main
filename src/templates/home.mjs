@@ -44,7 +44,7 @@ function hero(t) {
 <p class="hero-subtitle">${e(t.hero.subtitle)}</p>
 <div class="button-row">
 <a class="btn btn-primary" href="#contato" data-interest="piloto">${e(t.hero.primary)}</a>
-<a class="btn btn-secondary" href="#ouca" data-play-audio="#ouca"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z"/></svg>${e(t.hero.secondary)}</a>
+<a class="btn btn-secondary hero-play" href="#ouca" data-hero-play data-label-play="${e(t.hero.secondary)}" data-label-pause="${e(t.hero.secondaryPause)}"><svg class="hero-play-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z"/></svg><svg class="hero-pause-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="3.5" y="2.5" width="3" height="11" rx="0.8"/><rect x="9.5" y="2.5" width="3" height="11" rx="0.8"/></svg><span class="hero-play-label">${e(t.hero.secondary)}</span></a>
 </div>
 <p class="hero-note">${e(t.hero.note)}</p>
 </div>

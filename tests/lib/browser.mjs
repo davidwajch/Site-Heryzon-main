@@ -82,10 +82,13 @@ export async function launchBrowser() {
     });
 
   return {
-    async newPage({ width, height }) {
+    async newPage({ width, height, reducedMotion = false }) {
       const { targetId } = await send("Target.createTarget", { url: "about:blank" });
       const { sessionId } = await send("Target.attachToTarget", { targetId, flatten: true });
       await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: false }, sessionId);
+      if (reducedMotion) {
+        await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] }, sessionId);
+      }
 
       const evaluate = async (expression) => {
         const result = await send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true }, sessionId);

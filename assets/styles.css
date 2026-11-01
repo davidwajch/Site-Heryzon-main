@@ -222,6 +222,15 @@ h3 {
   fill: var(--accent-dark);
 }
 
+.hero-pause-icon,
+.hero-play.is-playing .hero-play-icon {
+  display: none;
+}
+
+.hero-play.is-playing .hero-pause-icon {
+  display: block;
+}
+
 .btn-secondary:hover {
   border-color: var(--text);
   color: var(--text);
