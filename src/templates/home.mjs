@@ -13,6 +13,25 @@ const CONTROL_ICONS = [
 
 const pad = (n) => String(n).padStart(2, "0");
 
+// Duração do bruno-apresentacao.mp3 (23,6 s), mostrada antes de o áudio carregar.
+const AUDIO_SECONDS = 23.6;
+const AUDIO_SRC = "/audio/bruno-apresentacao.mp3";
+const clock = (seconds) => `${Math.floor(Math.round(seconds) / 60)}:${pad(Math.round(seconds) % 60)}`;
+
+// Player próprio, igual nos dois lugares. Sem JavaScript fica o <audio> nativo (main.js tira os
+// controles nativos e mostra este). O rótulo do <audio> vale só para esse caso.
+function audioPlayer(t, labelledby, variant = "") {
+  const a = t.a11y;
+  return `<div class="audio-player${variant}" data-audio-player data-duration="${AUDIO_SECONDS}">
+<audio controls controlslist="nodownload noplaybackrate noremoteplayback" disableremoteplayback preload="none" src="${AUDIO_SRC}" aria-labelledby="${labelledby}"></audio>
+<div class="audio-ui">
+<button type="button" class="audio-toggle" aria-label="${e(a.audioPlay)}" data-label-play="${e(a.audioPlay)}" data-label-pause="${e(a.audioPause)}"><svg class="audio-icon-play" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="M5 3.2v11.6c0 .6.6.9 1.1.6l9-5.8c.5-.3.5-.9 0-1.2l-9-5.8C5.6 2.3 5 2.6 5 3.2z"/></svg><svg class="audio-icon-pause" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><rect x="4" y="3" width="3.5" height="12" rx="1"/><rect x="10.5" y="3" width="3.5" height="12" rx="1"/></svg></button>
+<div class="audio-progress" role="slider" tabindex="0" aria-label="${e(a.audioProgress)}" aria-valuemin="0" aria-valuemax="${Math.round(AUDIO_SECONDS)}" aria-valuenow="0" aria-valuetext="0:00 / ${clock(AUDIO_SECONDS)}"><span class="audio-track"><span class="audio-fill"></span><span class="audio-thumb"></span></span></div>
+<span class="audio-time" aria-hidden="true"><span class="audio-current">0:00</span> / <span class="audio-duration">${clock(AUDIO_SECONDS)}</span></span>
+</div>
+</div>`;
+}
+
 const sectionHead = ({ eyebrow, title }, extra = "") =>
   `<div class="section-head${extra}"><p class="eyebrow">${e(eyebrow)}</p><h2 class="section-title">${twoTone(title)}</h2></div>`;
 
@@ -25,7 +44,7 @@ function hero(t) {
 <p class="hero-subtitle">${e(t.hero.subtitle)}</p>
 <div class="button-row">
 <a class="btn btn-primary" href="#contato" data-interest="piloto">${e(t.hero.primary)}</a>
-<a class="btn btn-secondary" href="#ouca"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z"/></svg>${e(t.hero.secondary)}</a>
+<a class="btn btn-secondary" href="#ouca" data-play-audio="#ouca"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z"/></svg>${e(t.hero.secondary)}</a>
 </div>
 <p class="hero-note">${e(t.hero.note)}</p>
 </div>
@@ -37,7 +56,7 @@ function hero(t) {
 <div class="wave" aria-hidden="true">${bars}</div>
 <div class="call-panel-audio">
 <p class="call-panel-caption" id="call-panel-caption">${e(t.panel.caption)}</p>
-<audio controls preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="call-panel-caption"></audio>
+${audioPlayer(t, "call-panel-caption")}
 </div>
 </div>
 </section>`;
@@ -143,7 +162,7 @@ function hear(t) {
 <span class="player-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false"><path d="M12 3v18M7 8v8M17 8v8M3 11v2M21 11v2"/></svg></span>
 <span class="player-titles"><span class="player-title" id="player-title">${e(t.hear.playerTitle)}</span><span class="player-subtitle">${e(t.hear.playerSubtitle)}</span></span>
 </div>
-<audio controls preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="player-title"></audio>
+${audioPlayer(t, "player-title", " audio-player-dark")}
 <p class="player-caption">${e(t.hear.caption)}</p>
 </div>
 </div>

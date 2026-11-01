@@ -21,8 +21,8 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/styles.css?v=52afdda638">
-<script src="/assets/main.js?v=b7e1849e97" defer></script>
+<link rel="stylesheet" href="/assets/styles.css?v=52621413df">
+<script src="/assets/main.js?v=962466f3da" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Skip to content</a>
@@ -45,7 +45,7 @@
 <p class="hero-subtitle">Vozzi is a virtual voice assistant that answers your company's phone calls, 24 hours a day. It understands what callers need, handles the repetitive requests and hands the rest to your team with a summary of the call.</p>
 <div class="button-row">
 <a class="btn btn-primary" href="#contato" data-interest="piloto">Join the pilot</a>
-<a class="btn btn-secondary" href="#ouca"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z"/></svg>Hear Bruno</a>
+<a class="btn btn-secondary" href="#ouca" data-play-audio="#ouca"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z"/></svg>Hear Bruno</a>
 </div>
 <p class="hero-note">Pilot program with your first validation free of charge.</p>
 </div>
@@ -57,7 +57,14 @@
 <div class="wave" aria-hidden="true"><span style="--bar:18;animation-delay:0.00s"></span><span style="--bar:30;animation-delay:0.11s"></span><span style="--bar:44;animation-delay:0.22s"></span><span style="--bar:26;animation-delay:0.33s"></span><span style="--bar:52;animation-delay:0.44s"></span><span style="--bar:36;animation-delay:0.55s"></span><span style="--bar:22;animation-delay:0.66s"></span><span style="--bar:48;animation-delay:0.77s"></span><span style="--bar:60;animation-delay:0.88s"></span><span style="--bar:34;animation-delay:0.99s"></span><span style="--bar:20;animation-delay:1.10s"></span><span style="--bar:42;animation-delay:0.00s"></span><span style="--bar:56;animation-delay:0.11s"></span><span style="--bar:30;animation-delay:0.22s"></span><span style="--bar:46;animation-delay:0.33s"></span><span style="--bar:24;animation-delay:0.44s"></span><span style="--bar:38;animation-delay:0.55s"></span><span style="--bar:58;animation-delay:0.66s"></span><span style="--bar:28;animation-delay:0.77s"></span><span style="--bar:50;animation-delay:0.88s"></span><span style="--bar:32;animation-delay:0.99s"></span><span style="--bar:18;animation-delay:1.10s"></span><span style="--bar:40;animation-delay:0.00s"></span><span style="--bar:54;animation-delay:0.11s"></span><span style="--bar:26;animation-delay:0.22s"></span><span style="--bar:36;animation-delay:0.33s"></span><span style="--bar:22;animation-delay:0.44s"></span><span style="--bar:16;animation-delay:0.55s"></span></div>
 <div class="call-panel-audio">
 <p class="call-panel-caption" id="call-panel-caption">Hear how Bruno introduces himself.</p>
-<audio controls preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="call-panel-caption"></audio>
+<div class="audio-player" data-audio-player data-duration="23.6">
+<audio controls controlslist="nodownload noplaybackrate noremoteplayback" disableremoteplayback preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="call-panel-caption"></audio>
+<div class="audio-ui">
+<button type="button" class="audio-toggle" aria-label="Play Bruno" data-label-play="Play Bruno" data-label-pause="Pause"><svg class="audio-icon-play" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="M5 3.2v11.6c0 .6.6.9 1.1.6l9-5.8c.5-.3.5-.9 0-1.2l-9-5.8C5.6 2.3 5 2.6 5 3.2z"/></svg><svg class="audio-icon-pause" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><rect x="4" y="3" width="3.5" height="12" rx="1"/><rect x="10.5" y="3" width="3.5" height="12" rx="1"/></svg></button>
+<div class="audio-progress" role="slider" tabindex="0" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="24" aria-valuenow="0" aria-valuetext="0:00 / 0:24"><span class="audio-track"><span class="audio-fill"></span><span class="audio-thumb"></span></span></div>
+<span class="audio-time" aria-hidden="true"><span class="audio-current">0:00</span> / <span class="audio-duration">0:24</span></span>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -124,7 +131,14 @@
 <span class="player-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false"><path d="M12 3v18M7 8v8M17 8v8M3 11v2M21 11v2"/></svg></span>
 <span class="player-titles"><span class="player-title" id="player-title">Meet Bruno</span><span class="player-subtitle">DEMO · 24 S</span></span>
 </div>
-<audio controls preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="player-title"></audio>
+<div class="audio-player audio-player-dark" data-audio-player data-duration="23.6">
+<audio controls controlslist="nodownload noplaybackrate noremoteplayback" disableremoteplayback preload="none" src="/audio/bruno-apresentacao.mp3" aria-labelledby="player-title"></audio>
+<div class="audio-ui">
+<button type="button" class="audio-toggle" aria-label="Play Bruno" data-label-play="Play Bruno" data-label-pause="Pause"><svg class="audio-icon-play" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="M5 3.2v11.6c0 .6.6.9 1.1.6l9-5.8c.5-.3.5-.9 0-1.2l-9-5.8C5.6 2.3 5 2.6 5 3.2z"/></svg><svg class="audio-icon-pause" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><rect x="4" y="3" width="3.5" height="12" rx="1"/><rect x="10.5" y="3" width="3.5" height="12" rx="1"/></svg></button>
+<div class="audio-progress" role="slider" tabindex="0" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="24" aria-valuenow="0" aria-valuetext="0:00 / 0:24"><span class="audio-track"><span class="audio-fill"></span><span class="audio-thumb"></span></span></div>
+<span class="audio-time" aria-hidden="true"><span class="audio-current">0:00</span> / <span class="audio-duration">0:24</span></span>
+</div>
+</div>
 <p class="player-caption">A sample of the voice and speaking style that could represent your company on the phone.</p>
 </div>
 </div>

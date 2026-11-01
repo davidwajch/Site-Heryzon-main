@@ -144,6 +144,86 @@
     ["pause", "ended", "waiting", "emptied"].forEach((type) => panelAudio.addEventListener(type, () => setPlaying(false)));
   }
 
+  // Player próprio: play/pausa, barra clicável e arrastável, setas avançam e voltam 5 s.
+  const SEEK_STEP = 5;
+  const clock = (seconds) => {
+    const total = Math.round(seconds);
+    return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
+  };
+
+  document.querySelectorAll("[data-audio-player]").forEach((player) => {
+    const audio = player.querySelector("audio");
+    const toggle = player.querySelector(".audio-toggle");
+    const progress = player.querySelector(".audio-progress");
+    const current = player.querySelector(".audio-current");
+    const total = player.querySelector(".audio-duration");
+    const knownDuration = Number(player.dataset.duration);
+    audio.controls = false;
+
+    const duration = () => (Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : knownDuration);
+
+    function render() {
+      const length = duration();
+      const time = Math.min(audio.currentTime, length);
+      player.style.setProperty("--progress", `${(time / length) * 100}%`);
+      current.textContent = clock(time);
+      total.textContent = clock(length);
+      progress.setAttribute("aria-valuemax", String(Math.round(length)));
+      progress.setAttribute("aria-valuenow", String(Math.round(time)));
+      progress.setAttribute("aria-valuetext", `${clock(time)} / ${clock(length)}`);
+    }
+
+    // Enquanto toca, redesenha a cada quadro para a barra andar sem saltos.
+    let frame = 0;
+    const loop = () => {
+      render();
+      frame = audio.paused ? 0 : requestAnimationFrame(loop);
+    };
+
+    function setPlaying() {
+      const playing = !audio.paused;
+      player.classList.toggle("is-playing", playing);
+      toggle.setAttribute("aria-label", playing ? toggle.dataset.labelPause : toggle.dataset.labelPlay);
+      if (playing && !frame) frame = requestAnimationFrame(loop);
+      render();
+    }
+
+    function seek(seconds) {
+      audio.currentTime = Math.max(0, Math.min(seconds, duration()));
+      render();
+    }
+
+    toggle.addEventListener("click", () => (audio.paused ? audio.play() : audio.pause()));
+    ["play", "pause", "ended"].forEach((type) => audio.addEventListener(type, setPlaying));
+    ["loadedmetadata", "timeupdate", "seeked"].forEach((type) => audio.addEventListener(type, render));
+
+    progress.addEventListener("keydown", (event) => {
+      const moves = { ArrowRight: SEEK_STEP, ArrowUp: SEEK_STEP, ArrowLeft: -SEEK_STEP, ArrowDown: -SEEK_STEP };
+      if (event.key in moves) seek(audio.currentTime + moves[event.key]);
+      else if (event.key === "Home") seek(0);
+      else if (event.key === "End") seek(duration());
+      else return;
+      event.preventDefault();
+    });
+
+    const seekToPointer = (event) => {
+      const track = progress.querySelector(".audio-track").getBoundingClientRect();
+      seek(((event.clientX - track.left) / track.width) * duration());
+    };
+    progress.addEventListener("pointerdown", (event) => {
+      progress.setPointerCapture(event.pointerId);
+      seekToPointer(event);
+    });
+    progress.addEventListener("pointermove", (event) => {
+      if (progress.hasPointerCapture(event.pointerId)) seekToPointer(event);
+    });
+  });
+
+  // "Ouvir o Bruno" na abertura: leva até o player (pelo link) e já começa a tocar.
+  document.querySelectorAll("[data-play-audio]").forEach((link) => {
+    link.addEventListener("click", () => document.querySelector(`${link.dataset.playAudio} audio`)?.play());
+  });
+
   // Só um player toca por vez.
   const players = document.querySelectorAll("audio");
   players.forEach((audio) => {

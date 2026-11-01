@@ -197,6 +197,77 @@ test("Ondas da abertura só se movem enquanto o áudio do painel toca", { skip }
   await page.close();
 });
 
+test("Player próprio: play/pausa, setas de 5 s, clique na barra e tempo 0:00 / 0:24", { skip }, async () => {
+  const page = await browser.newPage({ width: 1280, height: 900 });
+  await page.goto(`${base}/en/`);
+  const state = (sel) =>
+    page.evaluate(`(() => {
+      const player = document.querySelector("${sel}");
+      const audio = player.querySelector("audio");
+      const progress = player.querySelector(".audio-progress");
+      return {
+        nativeControls: audio.controls,
+        nativeVisible: getComputedStyle(audio).display !== "none",
+        playing: !audio.paused,
+        time: Math.round(audio.currentTime),
+        label: player.querySelector(".audio-toggle").getAttribute("aria-label"),
+        text: player.querySelector(".audio-time").textContent,
+        valuenow: progress.getAttribute("aria-valuenow"),
+        valuetext: progress.getAttribute("aria-valuetext"),
+      };
+    })()`);
+  const panel = ".call-panel [data-audio-player]";
+  const hear = "#ouca [data-audio-player]";
+
+  let s = await state(panel);
+  assert.equal(s.nativeControls, false, "sem controles nativos");
+  assert.equal(s.nativeVisible, false);
+  assert.equal(s.label, en.a11y.audioPlay);
+  assert.equal(s.text, "0:00 / 0:24");
+
+  await page.evaluate(`document.querySelector("${panel} .audio-toggle").click()`);
+  await page.evaluate(`new Promise((r) => document.querySelector("${panel} audio").addEventListener("playing", r, { once: true }))`).catch(() => {});
+  s = await state(panel);
+  assert.equal(s.playing, true);
+  assert.equal(s.label, en.a11y.audioPause);
+
+  await page.evaluate(`document.querySelector("${panel} .audio-toggle").click()`);
+  const key = (k) => page.evaluate(`document.querySelector("${panel} .audio-progress").dispatchEvent(new KeyboardEvent("keydown", { key: "${k}", bubbles: true, cancelable: true }))`);
+  await page.evaluate(`document.querySelector("${panel} audio").currentTime = 0`);
+  await key("ArrowRight");
+  await key("ArrowRight");
+  s = await state(panel);
+  assert.equal(s.playing, false);
+  assert.equal(s.label, en.a11y.audioPlay);
+  assert.equal(s.time, 10, "duas setas para a direita = 10 s");
+  assert.equal(s.text, "0:10 / 0:24");
+  assert.equal(s.valuenow, "10");
+  assert.equal(s.valuetext, "0:10 / 0:24");
+  await key("ArrowLeft");
+  assert.equal((await state(panel)).time, 5);
+  await key("End");
+  assert.equal((await state(panel)).text, "0:24 / 0:24");
+  await key("Home");
+  assert.equal((await state(panel)).time, 0);
+
+  // Clique no meio da barra leva à metade do áudio.
+  await page.evaluate(`(() => {
+    const track = document.querySelector("${panel} .audio-track").getBoundingClientRect();
+    const progress = document.querySelector("${panel} .audio-progress");
+    progress.dispatchEvent(new PointerEvent("pointerdown", { pointerId: 1, clientX: track.left + track.width / 2, clientY: track.top, bubbles: true }));
+  })()`);
+  assert.equal((await state(panel)).text, "0:12 / 0:24");
+
+  // "Play Bruno" da abertura leva ao player da seção e começa a tocar.
+  await page.evaluate(`document.querySelector('.hero [data-play-audio="#ouca"]').click()`);
+  await page.evaluate(`new Promise((r) => { const a = document.querySelector("${hear} audio"); a.paused ? a.addEventListener("play", r, { once: true }) : r(); })`);
+  s = await state(hear);
+  assert.equal(s.playing, true);
+  assert.equal(s.label, en.a11y.audioPause);
+  assert.equal(await page.evaluate("location.hash"), "#ouca");
+  await page.close();
+});
+
 // Mesma tabela da especificação: passo -> caixas acesas.
 const FLOW = { 1: ["cliente"], 2: ["triagem"], 3: ["kb"], 4: ["registro", "resolve"], 5: ["humano", "registro"] };
 

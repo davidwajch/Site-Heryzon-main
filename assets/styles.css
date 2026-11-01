@@ -1280,6 +1280,132 @@ audio {
   color: #a9b4bc;
 }
 
+/* Player de áudio (abertura e "Ouça o Bruno") */
+
+.audio-ui {
+  display: none;
+}
+
+.js .audio-player audio {
+  display: none;
+}
+
+.js .audio-ui {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 56px;
+  padding: 6px 18px 6px 6px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.audio-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: var(--accent-dark);
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+}
+
+.audio-toggle:hover {
+  background: var(--accent-darker);
+}
+
+.audio-toggle svg {
+  fill: currentColor;
+}
+
+.audio-icon-pause,
+.audio-player.is-playing .audio-icon-play {
+  display: none;
+}
+
+.audio-player.is-playing .audio-icon-pause {
+  display: block;
+}
+
+/* A área de clique tem 44 px de altura; a barra visível, 6 px. */
+.audio-progress {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding-inline: 7px;
+  border-radius: 8px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.audio-track {
+  position: relative;
+  flex: 1;
+  height: 6px;
+  background: #d5dce1;
+  border-radius: 3px;
+}
+
+.audio-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--progress, 0%);
+  background: var(--accent);
+  border-radius: inherit;
+}
+
+.audio-thumb {
+  position: absolute;
+  top: 50%;
+  left: var(--progress, 0%);
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  background: var(--accent-dark);
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+}
+
+.audio-time {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+}
+
+.js .audio-player-dark .audio-ui {
+  background: #0a0f14;
+  border-color: #26313b;
+}
+
+.audio-player-dark .audio-track {
+  background: #3a444e;
+}
+
+.audio-player-dark .audio-thumb {
+  background: var(--accent);
+  border-color: #0a0f14;
+}
+
+.audio-player-dark .audio-time {
+  color: #c7ced4;
+}
+
+.audio-player-dark :focus-visible {
+  outline-color: #5fd0d6;
+}
+
 /* Controle */
 
 .section-control {
@@ -1991,6 +2117,24 @@ audio {
 }
 
 @media (max-width: 479px) {
+  /* Margens menores no bloco escuro para a barra do player não ficar curta demais. */
+  .hear {
+    padding: 28px 16px;
+  }
+
+  .player {
+    padding: 18px 14px;
+  }
+
+  .js .audio-ui {
+    gap: 10px;
+    padding: 5px 14px 5px 5px;
+  }
+
+  .audio-time {
+    font-size: 12px;
+  }
+
   .flow-branch:first-child {
     flex-grow: 3;
   }

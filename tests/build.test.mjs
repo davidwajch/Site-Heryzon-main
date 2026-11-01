@@ -100,7 +100,7 @@ test("hero panel: header, badge, caption and player, without the old rows", () =
     [pages.en, "Bruno · virtual assistant", "VOICE DEMO", "Hear how Bruno introduces himself."],
   ]) {
     assert.match(html, new RegExp(`</span>${header}</span>\\s*<span class="badge">${badge}</span>`));
-    assert.match(html, new RegExp(`<p class="call-panel-caption" id="call-panel-caption">${caption.replace(".", "\\.")}</p>\\s*<audio [^>]*aria-labelledby="call-panel-caption"`));
+    assert.match(html, new RegExp(`<p class="call-panel-caption" id="call-panel-caption">${caption.replace(".", "\\.")}</p>\\s*<div class="audio-player" data-audio-player[^>]*>\\s*<audio [^>]*aria-labelledby="call-panel-caption"`));
     assert.doesNotMatch(html, /call-steps|Motivo identificado|Reason identified/);
   }
 });
@@ -150,6 +150,20 @@ test("Bruno is \"he\" in English", () => {
   assert.match(pages.en, /Without a rule, he doesn&#39;t improvise\.|Without a rule, he doesn't improvise\./);
   assert.match(pages.en, /Hear how Bruno introduces himself\./);
   assert.doesNotMatch(pages.en, /Bruno introduces itself|It doesn&#39;t make things up|It doesn't make things up/);
+});
+
+test("custom audio player in both places, native fallback without menu options", () => {
+  for (const [html, play, pause, progress] of [
+    [pages.pt, "Ouvir o Bruno", "Pausar", "Progresso do áudio"],
+    [pages.en, "Play Bruno", "Pause", "Audio progress"],
+  ]) {
+    assert.equal((html.match(/<div class="audio-player[^"]*" data-audio-player data-duration="23.6">/g) || []).length, 2);
+    assert.equal((html.match(/<audio controls controlslist="nodownload noplaybackrate noremoteplayback" disableremoteplayback preload="none"/g) || []).length, 2);
+    assert.equal((html.match(new RegExp(`<button type="button" class="audio-toggle" aria-label="${play}" data-label-play="${play}" data-label-pause="${pause}">`, "g")) || []).length, 2);
+    assert.equal((html.match(new RegExp(`role="slider" tabindex="0" aria-label="${progress}" aria-valuemin="0" aria-valuemax="24" aria-valuenow="0" aria-valuetext="0:00 / 0:24"`, "g")) || []).length, 2);
+    assert.match(html, /class="audio-player audio-player-dark"/);
+    assert.match(html, /class="btn btn-secondary" href="#ouca" data-play-audio="#ouca"/);
+  }
 });
 
 test("footer: other matters by e-mail on every page", () => {

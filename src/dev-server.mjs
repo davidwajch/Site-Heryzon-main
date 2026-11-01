@@ -63,7 +63,17 @@ export function createDevServer({ roots = [ROOT], formMock = process.env.FORM_MO
       res.end("404");
       return;
     }
-    res.writeHead(200, { "Content-Type": TYPES[path.extname(file)] || "application/octet-stream" });
+    const type = TYPES[path.extname(file)] || "application/octet-stream";
+    // Pedidos parciais (Range), como o servidor de verdade: o player precisa deles para pular no áudio.
+    const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range ?? "");
+    if (range) {
+      const start = range[1] ? Number(range[1]) : Math.max(0, data.length - Number(range[2]));
+      const end = range[1] && range[2] ? Math.min(Number(range[2]), data.length - 1) : data.length - 1;
+      res.writeHead(206, { "Content-Type": type, "Accept-Ranges": "bytes", "Content-Range": `bytes ${start}-${end}/${data.length}` });
+      res.end(data.subarray(start, end + 1));
+      return;
+    }
+    res.writeHead(200, { "Content-Type": type, "Accept-Ranges": "bytes" });
     res.end(data);
   });
 }

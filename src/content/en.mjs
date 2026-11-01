@@ -15,6 +15,9 @@ export default {
     skipLink: "Skip to content",
     menuOpen: "Menu",
     menuClose: "Close menu",
+    audioPlay: "Play Bruno",
+    audioPause: "Pause",
+    audioProgress: "Audio progress",
     languages: { pt: "Português", en: "English" },
   },
   nav: {
