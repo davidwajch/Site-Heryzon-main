@@ -660,8 +660,9 @@ audio {
   position: relative;
   overflow: hidden;
   padding-block: 18px;
-  background: var(--text);
-  color: #fff;
+  background: var(--accent-light);
+  border-block: 1px solid #c9e6e8;
+  color: var(--text);
 }
 
 .marquee-track {
@@ -671,7 +672,7 @@ audio {
   font-size: 14px;
   letter-spacing: 0.14em;
   white-space: nowrap;
-  animation: marquee 38s linear infinite;
+  animation: marquee 55s linear infinite;
 }
 
 .marquee-track > span {
@@ -690,12 +691,12 @@ audio {
 }
 
 .marquee:focus-visible {
-  outline: 3px solid #5fd0d6;
+  outline: 3px solid var(--accent-dark);
   outline-offset: -3px;
 }
 
 .marquee-diamond {
-  color: var(--accent);
+  color: var(--accent-dark);
 }
 
 @keyframes marquee {
@@ -979,8 +980,18 @@ audio {
     position: static;
   }
 
-  .how-step {
+  .how-steps {
+    gap: 12px;
+  }
+
+  .how-steps > .how-step {
     min-height: 0;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .how-step .card-title {
+    font-size: 20px;
   }
 }
 
@@ -1039,13 +1050,16 @@ audio {
   .js .flow-node,
   .js .flow-node-main,
   .js .flow-node-outside {
+    align-self: center;
+    width: auto;
     min-width: 0;
-    padding: 2px 8px;
+    padding: 2px 12px;
     border-radius: 8px;
+    text-align: center;
   }
 
-  .js .flow-node-main {
-    padding-inline: 18px;
+  .js .flow-node-outside .flow-group-label-muted {
+    text-align: center;
   }
 
   .js .flow-node-title,
@@ -1084,9 +1098,12 @@ audio {
     margin: 0 calc(100% / 6) 0 calc(100% / 3);
   }
 
+  /* Base de conhecimento numa linha, Dúvidas e Solicitações lado a lado (encostadas no centro),
+     Agendamentos na linha de baixo; cada caixa do tamanho do texto. */
   .js .flow-group {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: auto auto;
+    justify-content: center;
     gap: 3px;
     padding: 5px;
     border-radius: 10px;
@@ -1096,6 +1113,15 @@ audio {
   .js .flow-group > [data-node="kb"],
   .js .flow-group > :last-child {
     grid-column: 1 / -1;
+    justify-self: center;
+  }
+
+  .js .flow-group > :nth-child(3) {
+    justify-self: end;
+  }
+
+  .js .flow-group > :nth-child(4) {
+    justify-self: start;
   }
 
   .js .flow-group-label {

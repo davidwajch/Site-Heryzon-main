@@ -80,9 +80,9 @@
     });
   });
 
-  // Como funciona: o passo que cruza a linha de leitura acende as caixas correspondentes do fluxograma.
-  // No computador a linha é o meio da tela; no celular, com o fluxograma fixo no topo,
-  // é o meio da área que sobra abaixo dele.
+  // Como funciona: no computador, o passo que cruza o meio da tela acende as caixas do fluxograma.
+  // No celular, com o fluxograma fixo no topo, acende o primeiro passo que aparece inteiro logo
+  // abaixo dele: assim o passo aceso nunca é um que já está meio escondido atrás do fluxograma.
   const FLOW_NODES = { 1: ["cliente"], 2: ["triagem"], 3: ["kb"], 4: ["resolve", "registro"], 5: ["humano", "registro"] };
   const steps = document.querySelectorAll("[data-step]");
   const nodes = document.querySelectorAll("[data-node]");
@@ -97,12 +97,6 @@
     nodes.forEach((el) => el.classList.toggle("is-lit", FLOW_NODES[step].includes(el.dataset.node)));
   }
 
-  function readingLine() {
-    if (!compactFlow.matches) return window.innerHeight / 2;
-    const flowBottom = Math.max(howFlow.getBoundingClientRect().bottom, 0);
-    return flowBottom + (window.innerHeight - flowBottom) / 2;
-  }
-
   // Fixo = encostado no topo; antes de chegar lá ou depois de soltar, ele está acima ou abaixo disso.
   function updateStuck() {
     const top = parseFloat(getComputedStyle(howFlow).top) || 0;
@@ -110,14 +104,34 @@
     howFlow.classList.toggle("is-stuck", stuck);
   }
 
-  function updateActiveStep() {
-    updateStuck();
-    const line = readingLine();
+  function middleStep() {
     let step = 1;
     steps.forEach((el) => {
-      if (el.getBoundingClientRect().top <= line) step = Number(el.dataset.step);
+      if (el.getBoundingClientRect().top <= window.innerHeight / 2) step = Number(el.dataset.step);
     });
-    highlightStep(step);
+    return step;
+  }
+
+  // Primeiro passo inteiro entre o fluxograma e o pé da tela; sem nenhum inteiro, o mais visível.
+  function firstWholeStep() {
+    const areaTop = Math.max(howFlow.getBoundingClientRect().bottom, 0) - 1;
+    let best = 0;
+    let bestVisible = 0;
+    for (const el of steps) {
+      const box = el.getBoundingClientRect();
+      if (box.top >= areaTop && box.bottom <= window.innerHeight + 1) return Number(el.dataset.step);
+      const visible = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, areaTop);
+      if (visible > bestVisible) {
+        bestVisible = visible;
+        best = Number(el.dataset.step);
+      }
+    }
+    return best || activeStep || 1;
+  }
+
+  function updateActiveStep() {
+    updateStuck();
+    highlightStep(compactFlow.matches ? firstWholeStep() : middleStep());
   }
 
   if (steps.length && howFlow && !reducedMotion) {

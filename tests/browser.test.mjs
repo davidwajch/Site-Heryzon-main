@@ -180,12 +180,11 @@ test("Ondas da abertura só se movem enquanto o áudio do painel toca", { skip }
 
   await page.evaluate(`(async () => {
     const audio = document.querySelector(".call-panel audio");
-    // O servidor local não atende Range, então pular para o fim não funciona; acelera até o fim.
-    audio.playbackRate = 16;
+    // Pula para perto do fim (o servidor local atende Range) e toca em velocidade normal.
+    audio.currentTime = 23.2;
     await audio.play();
   })()`);
   await waitFor(`document.querySelector(".call-panel audio").ended`);
-  await page.evaluate(`document.querySelector(".call-panel audio").playbackRate = 1`);
   assert.equal(await waves(), "paused", "terminado");
 
   // Tocar o outro player pausa o do painel, e as ondas param junto.
@@ -333,6 +332,7 @@ const FLOW = { 1: ["cliente"], 2: ["triagem"], 3: ["kb"], 4: ["registro", "resol
 
 for (const [width, height] of [
   [375, 812],
+  [390, 844],
   [1280, 800],
 ]) {
   test(`Fluxograma acende as caixas certas, em ordem, rolando a ${width}×${height}`, { skip }, async () => {
@@ -346,21 +346,28 @@ for (const [width, height] of [
     let sawStuck = false;
     for (let y = start; y <= end; y += 20) {
       await page.scrollTo(y);
-      const { active, lit, coveredBy, stuck, shadow } = await page.evaluate(`(() => {
+      const { active, lit, coveredBy, cutAtBottom, wholeAbove, stuck, shadow } = await page.evaluate(`(() => {
         const flow = document.querySelector(".how-flow").getBoundingClientRect();
+        const steps = [...document.querySelectorAll(".how-step")];
         const step = document.querySelector(".how-step.is-active");
         const box = step.getBoundingClientRect();
-        const stuck = getComputedStyle(document.querySelector(".how-flow")).position === "sticky" && flow.top >= 0 && flow.top < 2;
+        const stuck = getComputedStyle(document.querySelector(".how-flow")).position === "sticky" && flow.top >= 0 && flow.top < 2 && ${width} <= 980;
+        const whole = (el) => { const b = el.getBoundingClientRect(); return b.top >= flow.bottom - 1 && b.bottom <= innerHeight + 1; };
         return {
           active: Number(step.dataset.step),
           lit: [...new Set([...document.querySelectorAll(".flow-node.is-lit")].map((n) => n.dataset.node))].sort(),
-          coveredBy: stuck && ${width} <= 980 ? Math.max(0, flow.bottom - box.top) : 0,
-          stuck: stuck && ${width} <= 980,
+          // 1 px de folga para as frações de pixel, a mesma do main.js.
+          coveredBy: stuck ? Math.max(0, flow.bottom - 1 - box.top) : 0,
+          cutAtBottom: stuck ? Math.max(0, box.bottom - innerHeight - 1) : 0,
+          wholeAbove: stuck ? steps.slice(0, steps.indexOf(step)).filter(whole).length : 0,
+          stuck,
           shadow: document.querySelector(".how-flow").classList.contains("is-stuck"),
         };
       })()`);
       assert.deepEqual(lit, FLOW[active], `y=${y}, passo ${active}`);
       assert.equal(coveredBy, 0, `y=${y}: o passo ${active} aceso está embaixo do fluxograma`);
+      assert.equal(cutAtBottom, 0, `y=${y}: o passo ${active} aceso não cabe inteiro na tela`);
+      assert.equal(wholeAbove, 0, `y=${y}: há um passo inteiro entre o fluxograma e o passo aceso`);
       assert.equal(shadow, stuck, `y=${y}: sombra ${shadow ? "sem" : "faltando com"} o fluxograma fixo`);
       if (order.at(-1) !== active) order.push(active);
       sawStuck ||= stuck;
