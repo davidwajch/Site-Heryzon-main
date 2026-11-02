@@ -1158,6 +1158,17 @@ audio {
   color: var(--text-2);
 }
 
+/* Bloco em destaque no fim do cartão (margin-top: auto o encosta embaixo, com os cartões da mesma altura). */
+.card .does-note {
+  margin-top: auto;
+  padding: 16px;
+  background: var(--accent-light);
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
 .does-card-1 {
   border-top: 4px solid var(--accent);
 }

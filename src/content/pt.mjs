@@ -59,7 +59,7 @@ export default {
     eyebrow: "COMO FUNCIONA",
     title: "A pessoa fala. [O Bruno conduz.]",
     steps: [
-      ["Atende", "Atende na hora, a qualquer horário, sem menu de teclas."],
+      ["Atende", "Atende a qualquer horário, sem menu de teclas."],
       ["Entende", "A pessoa explica com as próprias palavras, e o Bruno identifica o motivo da ligação."],
       ["Consulta", "Busca a resposta nos documentos e nas regras que a sua empresa aprovou."],
       ["Resolve", "Tira a dúvida, agenda, remarca ou cancela durante a própria ligação."],
@@ -87,7 +87,11 @@ export default {
     title: "Claro sobre o que faz. [E sobre o que não faz.]",
     columns: [
       ["Resolve na ligação", ["Dúvidas frequentes (horários, endereços, documentos, procedimentos)", "Agendamentos", "Remarcações", "Cancelamentos", "Triagem do motivo da ligação"]],
-      ["Passa para uma pessoa", ["Reclamações graves", "Negociações", "Situações delicadas", "Qualquer pedido sem regra aprovada"]],
+      [
+        "Passa para uma pessoa",
+        ["Reclamações graves", "Negociações", "Situações delicadas", "Qualquer pedido sem regra aprovada"],
+        ["Junto com a ligação, o atendente recebe", "o resumo da conversa, os pontos principais e os dados importantes para o atendimento."],
+      ],
       ["Ainda não faz", ["Ligações de saída", "Vendas", "Atendimento por WhatsApp"]],
     ],
   },
@@ -96,7 +100,7 @@ export default {
     title: "Feito para as ligações [que se repetem.]",
     items: [
       ["Fora do horário", "À noite, nos fins de semana e nos feriados, a ligação é atendida."],
-      ["Nos picos", "Quando todos chamam ao mesmo tempo, ninguém fica na fila."],
+      ["Nos picos", "Assume as ligações que se repetem e ajuda a reduzir a fila nos horários de maior movimento."],
       ["Perguntas repetidas", "A mesma resposta certa, toda vez, sem ocupar a equipe."],
       ["Agendamentos", "Marca, remarca e cancela sem passar por um atendente."],
     ],

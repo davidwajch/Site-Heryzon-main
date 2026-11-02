@@ -130,7 +130,10 @@ ${flowNode("registro", f.registro, " flow-node-main")}
 
 function does(t) {
   const cols = t.does.columns
-    .map(([title, items], i) => `<li class="card does-card does-card-${i + 1}"><h3 class="card-title">${e(title)}</h3><ul>${items.map((item) => `<li>${e(item)}</li>`).join("")}</ul></li>`)
+    .map(([title, items, note], i) => {
+      const highlight = note ? `<p class="does-note"><strong>${e(note[0])}</strong> ${e(note[1])}</p>` : "";
+      return `<li class="card does-card does-card-${i + 1}"><h3 class="card-title">${e(title)}</h3><ul>${items.map((item) => `<li>${e(item)}</li>`).join("")}</ul>${highlight}</li>`;
+    })
     .join("");
   return `<section id="o-que-faz" class="container section section-does">
 ${sectionHead(t.does)}

@@ -59,7 +59,7 @@ export default {
     eyebrow: "HOW IT WORKS",
     title: "The caller talks. [Bruno takes it from there.]",
     steps: [
-      ["Answers", "Picks up right away, at any hour, with no keypad menu."],
+      ["Answers", "Answers at any hour, with no keypad menu."],
       ["Understands", "Callers explain in their own words, and Bruno identifies why they're calling."],
       ["Checks", "Looks up the answer in the documents and rules your company has approved."],
       ["Resolves", "Answers the question, books, reschedules or cancels during the call itself."],
@@ -87,7 +87,11 @@ export default {
     title: "Clear about what it does. [And what it doesn't.]",
     columns: [
       ["Handles on the call", ["Common questions (hours, locations, documents, procedures)", "Bookings", "Rescheduling", "Cancellations", "Call triage"]],
-      ["Hands off to a person", ["Serious complaints", "Negotiations", "Sensitive situations", "Any request without an approved rule"]],
+      [
+        "Hands off to a person",
+        ["Serious complaints", "Negotiations", "Sensitive situations", "Any request without an approved rule"],
+        ["Along with the call, the agent receives", "a summary of the conversation, the key points and the details needed to help the caller."],
+      ],
       ["Not yet", ["Outbound calls", "Sales", "WhatsApp support"]],
     ],
   },
@@ -96,7 +100,7 @@ export default {
     title: "Built for the calls [that keep coming.]",
     items: [
       ["After hours", "Nights, weekends and holidays, every call gets answered."],
-      ["At peak times", "When everyone calls at once, nobody waits in line."],
+      ["At peak times", "Takes on the repetitive calls and helps reduce the queue when call volume is highest."],
       ["Repeated questions", "The same right answer every time, without tying up your team."],
       ["Scheduling", "Books, reschedules and cancels without going through an agent."],
     ],
