@@ -73,7 +73,7 @@ export default {
       resolveGroup: "RESOLVED ON THE CALL",
       kb: ["Knowledge base", "your company's documents and rules"],
       resolve: [
-        ["Questions", "answered right away"],
+        ["Questions", "answered on the call"],
         ["Requests", "handled by voice"],
         ["Scheduling", "books, reschedules and cancels"],
       ],
@@ -99,7 +99,7 @@ export default {
     eyebrow: "WHERE IT HELPS",
     title: "Built for the calls [that keep coming.]",
     items: [
-      ["After hours", "Nights, weekends and holidays, every call gets answered."],
+      ["After hours", "Nights, weekends and holidays, your company keeps answering calls."],
       ["At peak times", "Takes on the repetitive calls and helps reduce the queue when call volume is highest."],
       ["Repeated questions", "The same right answer every time, without tying up your team."],
       ["Scheduling", "Books, reschedules and cancels without going through an agent."],

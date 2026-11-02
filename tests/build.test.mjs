@@ -167,7 +167,7 @@ test("custom audio player in both places, native fallback without menu options",
   assert.match(pages.en, /<a class="btn btn-secondary hero-play" href="#ouca" data-hero-play data-label-play="Hear Bruno" data-label-pause="Pause Bruno">/);
 });
 
-test("copy adjustments: handoff note, peak times and step 01", () => {
+test("copy adjustments: handoff note, peak times, step 01, questions and after hours", () => {
   assert.match(pages.pt, /<p class="does-note"><strong>Junto com a ligação, o atendente recebe<\/strong> o resumo da conversa, os pontos principais e os dados importantes para o atendimento\.<\/p><\/li>/);
   assert.match(pages.en, /<p class="does-note"><strong>Along with the call, the agent receives<\/strong> a summary of the conversation, the key points and the details needed to help the caller\.<\/p><\/li>/);
   assert.equal((pages.pt.match(/class="does-note"/g) || []).length, 1, "só no cartão Passa para uma pessoa");
@@ -175,8 +175,12 @@ test("copy adjustments: handoff note, peak times and step 01", () => {
   assert.match(pages.en, /At peak times<\/h3><p>Takes on the repetitive calls and helps reduce the queue when call volume is highest\.<\/p>/);
   assert.match(pages.pt, /Atende<\/h3><p>Atende a qualquer horário, sem menu de teclas\.<\/p>/);
   assert.match(pages.en, /Answers<\/h3><p>Answers at any hour, with no keypad menu\.<\/p>/);
-  assert.doesNotMatch(pages.pt, /ninguém fica na fila|Atende na hora/);
-  assert.doesNotMatch(pages.en, /nobody waits in line|Picks up right away/);
+  assert.match(pages.pt, /<span class="flow-node-title">Dúvidas<\/span><span class="flow-node-text">responde na ligação<\/span>/);
+  assert.match(pages.en, /<span class="flow-node-title">Questions<\/span><span class="flow-node-text">answered on the call<\/span>/);
+  assert.match(pages.pt, /Fora do horário<\/h3><p>À noite, nos fins de semana e nos feriados, a sua empresa continua atendendo\.<\/p>/);
+  assert.match(pages.en, /After hours<\/h3><p>Nights, weekends and holidays, your company keeps answering calls\.<\/p>/);
+  assert.doesNotMatch(pages.pt, /ninguém fica na fila|Atende na hora|responde na hora|a ligação é atendida/);
+  assert.doesNotMatch(pages.en, /nobody waits in line|Picks up right away|answered right away|every call gets answered/);
 });
 
 test("footer: other matters by e-mail on every page", () => {

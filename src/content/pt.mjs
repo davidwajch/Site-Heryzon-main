@@ -73,7 +73,7 @@ export default {
       resolveGroup: "RESOLVE NA LIGAÇÃO",
       kb: ["Base de conhecimento", "documentos e regras da sua empresa"],
       resolve: [
-        ["Dúvidas", "responde na hora"],
+        ["Dúvidas", "responde na ligação"],
         ["Solicitações", "resolve por voz"],
         ["Agendamentos", "marca, remarca e cancela"],
       ],
@@ -99,7 +99,7 @@ export default {
     eyebrow: "ONDE AJUDA",
     title: "Feito para as ligações [que se repetem.]",
     items: [
-      ["Fora do horário", "À noite, nos fins de semana e nos feriados, a ligação é atendida."],
+      ["Fora do horário", "À noite, nos fins de semana e nos feriados, a sua empresa continua atendendo."],
       ["Nos picos", "Assume as ligações que se repetem e ajuda a reduzir a fila nos horários de maior movimento."],
       ["Perguntas repetidas", "A mesma resposta certa, toda vez, sem ocupar a equipe."],
       ["Agendamentos", "Marca, remarca e cancela sem passar por um atendente."],
