@@ -1,0 +1,377 @@
+// Testes do JavaScript do site num Chrome sem interface (pulados se não houver Chrome).
+
+import { test, before, after } from "node:test";
+import assert from "node:assert/strict";
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { SITE, buildSite } from "../src/build.mjs";
+import { createDevServer } from "../src/dev-server.mjs";
+import { chromePath, launchBrowser } from "./lib/browser.mjs";
+import pt from "../src/content/pt.mjs";
+import en from "../src/content/en.mjs";
+
+const skip = chromePath ? false : "Chrome não encontrado (defina CHROME_PATH para rodar)";
+
+let out;
+let server;
+let browser;
+let base;
+const forms = [];
+
+before(async () => {
+  if (skip) return;
+  out = await mkdtemp(path.join(tmpdir(), "heryzon-site-"));
+  await buildSite(out);
+  server = createDevServer({ roots: [out, SITE], formMock: "", formDelay: 0, onForm: (body) => forms.push(body) });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  base = `http://127.0.0.1:${server.address().port}`;
+  browser = await launchBrowser();
+});
+
+after(async () => {
+  server?.closeAllConnections();
+  server?.close();
+  if (out) await rm(out, { recursive: true, force: true });
+  await browser?.close();
+});
+
+// Campos visíveis (sem os radios, o hidden e o anti-spam) e os nomes que o FormData enviaria.
+const FORM_STATE = `(() => {
+  const form = document.getElementById("contact-form");
+  const visible = [...form.querySelectorAll("input, select, textarea")]
+    .filter((el) => el.type !== "hidden" && el.type !== "radio" && !el.closest(".hp-field") && el.getClientRects().length > 0)
+    .map((el) => el.name);
+  return {
+    topic: form.querySelector('input[name="interest"]:checked').value,
+    visible,
+    sent: [...new FormData(form).keys()],
+    status: form.querySelector("[data-topic-status]").textContent,
+  };
+})()`;
+
+// Nomes e valores de um corpo multipart/form-data.
+function parseMultipart(body) {
+  return Object.fromEntries([...body.matchAll(/name="([^"]+)"\r\n\r\n([^\r]*)\r\n/g)].map((m) => [m[1], m[2]]));
+}
+
+async function waitForForm(count) {
+  for (let i = 0; i < 100 && forms.length < count; i++) await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(forms.length, count, "o formulário não chegou ao servidor");
+  return parseMultipart(forms[count - 1]);
+}
+
+test("Piloto é o padrão e mostra os campos da empresa", { skip }, async () => {
+  const page = await browser.newPage({ width: 1280, height: 900 });
+  await page.goto(`${base}/`);
+  const state = await page.evaluate(FORM_STATE);
+  assert.equal(state.topic, "piloto");
+  assert.deepEqual(state.visible, ["name", "email", "company", "industry", "volume", "message"]);
+  assert.deepEqual(state.sent, ["interest", "name", "email", "company", "industry", "volume", "message", "lang", "website"]);
+  assert.equal(state.status, "", "nada é anunciado ao carregar a página");
+  await page.close();
+});
+
+test("Investidor esconde, não valida e não envia os campos da empresa", { skip }, async () => {
+  const page = await browser.newPage({ width: 1280, height: 900 });
+  await page.goto(`${base}/`);
+  await page.evaluate(`document.getElementById("f-company").value = "ACME"; document.querySelector('input[value="investimento"]').click()`);
+  const state = await page.evaluate(FORM_STATE);
+  assert.equal(state.topic, "investimento");
+  assert.deepEqual(state.visible, ["name", "email", "message"]);
+  assert.deepEqual(state.sent, ["interest", "name", "email", "message", "lang", "website"]);
+  assert.equal(state.status, pt.contact.topic.announce.investimento);
+  assert.equal(await page.evaluate(`document.getElementById("f-company").willValidate`), false);
+
+  const before = forms.length;
+  await page.evaluate(`
+    document.getElementById("f-name").value = "Ana";
+    document.getElementById("f-email").value = "ana@exemplo.com";
+    document.getElementById("contact-form").requestSubmit();
+  `);
+  const sent = await waitForForm(before + 1);
+  assert.equal(sent.interest, "investimento");
+  assert.deepEqual(Object.keys(sent).sort(), ["email", "interest", "lang", "message", "name", "website"]);
+
+  // Voltando para Piloto, o valor digitado continua lá e volta a ser enviado.
+  await page.goto(`${base}/`);
+  await page.evaluate(`document.querySelector('input[value="investimento"]').click(); document.querySelector('input[value="piloto"]').click()`);
+  const back = await page.evaluate(FORM_STATE);
+  assert.deepEqual(back.visible, ["name", "email", "company", "industry", "volume", "message"]);
+  assert.equal(back.status, pt.contact.topic.announce.piloto);
+  await page.close();
+});
+
+test("Envio como piloto leva empresa, segmento e ligações", { skip }, async () => {
+  const page = await browser.newPage({ width: 1280, height: 900 });
+  await page.goto(`${base}/en/`);
+  const before = forms.length;
+  await page.evaluate(`
+    document.getElementById("f-name").value = "Ana";
+    document.getElementById("f-email").value = "ana@example.com";
+    document.getElementById("f-company").value = "ACME";
+    document.getElementById("f-volume").value = "nao-sei";
+    document.getElementById("contact-form").requestSubmit();
+  `);
+  const sent = await waitForForm(before + 1);
+  assert.equal(sent.interest, "piloto");
+  assert.equal(sent.company, "ACME");
+  assert.equal(sent.volume, "nao-sei");
+  assert.equal(sent.lang, "en");
+  await page.evaluate(`document.querySelector('input[value="investimento"]').click()`);
+  // O formulário some depois do envio; o anúncio continua no idioma da página.
+  assert.equal(await page.evaluate(`document.querySelector("[data-topic-status]").textContent`), en.contact.topic.announce.investimento);
+  await page.close();
+});
+
+test("Botões de piloto e de investimento escolhem a opção do formulário", { skip }, async () => {
+  const page = await browser.newPage({ width: 1280, height: 900 });
+  await page.goto(`${base}/`);
+  await page.evaluate(`document.querySelector('.investors [data-interest="investimento"]').click()`);
+  assert.equal((await page.evaluate(FORM_STATE)).topic, "investimento");
+  for (const selector of [".site-header", ".hero", ".pilot-copy"]) {
+    await page.evaluate(`document.querySelector('input[value="investimento"]').click(); document.querySelector('${selector} [data-interest="piloto"]').click()`);
+    assert.equal((await page.evaluate(FORM_STATE)).topic, "piloto", selector);
+  }
+  await page.close();
+});
+
+test("Faixa corrida: o toque pausa e retoma; o clique do mouse não prende a pausa", { skip }, async () => {
+  const page = await browser.newPage({ width: 375, height: 812 });
+  await page.goto(`${base}/`);
+  const tap = (pointerType) =>
+    page.evaluate(`(() => {
+      const marquee = document.querySelector(".marquee");
+      marquee.dispatchEvent(new PointerEvent("pointerdown", { pointerType: "${pointerType}", bubbles: true }));
+      marquee.click();
+      return marquee.classList.contains("is-paused");
+    })()`);
+  assert.equal(await tap("touch"), true);
+  assert.equal(await tap("touch"), false);
+  assert.equal(await tap("mouse"), false);
+  assert.equal(await page.evaluate(`document.querySelector(".marquee").tabIndex`), 0, "focável pelo teclado");
+  await page.close();
+});
+
+test("Ondas da abertura só se movem enquanto o áudio do painel toca", { skip }, async () => {
+  const page = await browser.newPage({ width: 1280, height: 900 });
+  await page.goto(`${base}/`);
+  const waves = () => page.evaluate(`getComputedStyle(document.querySelector(".wave span")).animationPlayState`);
+  const waitFor = (expression) =>
+    page.evaluate(`new Promise((resolve, reject) => {
+      const start = Date.now();
+      (function check() {
+        if (${expression}) return resolve(true);
+        if (Date.now() - start > 10000) return reject(new Error("tempo esgotado: ${expression.replace(/"/g, "'")}"));
+        setTimeout(check, 50);
+      })();
+    })`);
+  assert.equal(await waves(), "paused", "paradas ao carregar");
+
+  await page.evaluate(`document.querySelector(".call-panel audio").play()`);
+  await waitFor(`document.querySelector(".call-panel").classList.contains("is-playing")`);
+  assert.equal(await waves(), "running", "tocando");
+
+  await page.evaluate(`document.querySelector(".call-panel audio").pause()`);
+  await waitFor(`!document.querySelector(".call-panel").classList.contains("is-playing")`);
+  assert.equal(await waves(), "paused", "pausado");
+
+  await page.evaluate(`(async () => {
+    const audio = document.querySelector(".call-panel audio");
+    // Pula para perto do fim (o servidor local atende Range) e toca em velocidade normal.
+    audio.currentTime = 23.2;
+    await audio.play();
+  })()`);
+  await waitFor(`document.querySelector(".call-panel audio").ended`);
+  assert.equal(await waves(), "paused", "terminado");
+
+  // Tocar o outro player pausa o do painel, e as ondas param junto.
+  await page.evaluate(`document.querySelector(".call-panel audio").currentTime = 0; document.querySelector(".call-panel audio").play()`);
+  await waitFor(`document.querySelector(".call-panel").classList.contains("is-playing")`);
+  await page.evaluate(`document.querySelector("#ouca audio").play()`);
+  await waitFor(`!document.querySelector(".call-panel").classList.contains("is-playing")`);
+  assert.equal(await waves(), "paused", "outro player tocando");
+  await page.close();
+});
+
+test("Player próprio: play/pausa, setas de 5 s, clique na barra e tempo 0:00 / 0:24", { skip }, async () => {
+  const page = await browser.newPage({ width: 1280, height: 900 });
+  await page.goto(`${base}/en/`);
+  const state = (sel) =>
+    page.evaluate(`(() => {
+      const player = document.querySelector("${sel}");
+      const audio = player.querySelector("audio");
+      const progress = player.querySelector(".audio-progress");
+      return {
+        nativeControls: audio.controls,
+        nativeVisible: getComputedStyle(audio).display !== "none",
+        playing: !audio.paused,
+        time: Math.round(audio.currentTime),
+        label: player.querySelector(".audio-toggle").getAttribute("aria-label"),
+        text: player.querySelector(".audio-time").textContent,
+        valuenow: progress.getAttribute("aria-valuenow"),
+        valuetext: progress.getAttribute("aria-valuetext"),
+      };
+    })()`);
+  const panel = ".call-panel [data-audio-player]";
+  const hear = "#ouca [data-audio-player]";
+
+  let s = await state(panel);
+  assert.equal(s.nativeControls, false, "sem controles nativos");
+  assert.equal(s.nativeVisible, false);
+  assert.equal(s.label, en.a11y.audioPlay);
+  assert.equal(s.text, "0:00 / 0:24");
+
+  await page.evaluate(`document.querySelector("${panel} .audio-toggle").click()`);
+  await page.evaluate(`new Promise((r) => document.querySelector("${panel} audio").addEventListener("playing", r, { once: true }))`).catch(() => {});
+  s = await state(panel);
+  assert.equal(s.playing, true);
+  assert.equal(s.label, en.a11y.audioPause);
+
+  await page.evaluate(`document.querySelector("${panel} .audio-toggle").click()`);
+  const key = (k) => page.evaluate(`document.querySelector("${panel} .audio-progress").dispatchEvent(new KeyboardEvent("keydown", { key: "${k}", bubbles: true, cancelable: true }))`);
+  await page.evaluate(`document.querySelector("${panel} audio").currentTime = 0`);
+  await key("ArrowRight");
+  await key("ArrowRight");
+  s = await state(panel);
+  assert.equal(s.playing, false);
+  assert.equal(s.label, en.a11y.audioPlay);
+  assert.equal(s.time, 10, "duas setas para a direita = 10 s");
+  assert.equal(s.text, "0:10 / 0:24");
+  assert.equal(s.valuenow, "10");
+  assert.equal(s.valuetext, "0:10 / 0:24");
+  await key("ArrowLeft");
+  assert.equal((await state(panel)).time, 5);
+  await key("End");
+  assert.equal((await state(panel)).text, "0:24 / 0:24");
+  await key("Home");
+  assert.equal((await state(panel)).time, 0);
+
+  // Clique no meio da barra leva à metade do áudio.
+  await page.evaluate(`(() => {
+    const track = document.querySelector("${panel} .audio-track").getBoundingClientRect();
+    const progress = document.querySelector("${panel} .audio-progress");
+    progress.dispatchEvent(new PointerEvent("pointerdown", { pointerId: 1, clientX: track.left + track.width / 2, clientY: track.top, bubbles: true }));
+  })()`);
+  assert.equal((await state(panel)).text, "0:12 / 0:24");
+
+  // O player de "Ouça o Bruno" continua independente.
+  await page.evaluate(`document.querySelector("${hear} .audio-toggle").click()`);
+  await page.evaluate(`new Promise((r) => { const a = document.querySelector("${hear} audio"); a.paused ? a.addEventListener("play", r, { once: true }) : r(); })`);
+  s = await state(hear);
+  assert.equal(s.playing, true);
+  assert.equal(s.label, en.a11y.audioPause);
+  await page.close();
+});
+
+// Estado do botão da abertura e do áudio do painel.
+const HERO_STATE = `(() => {
+  const button = document.querySelector(".hero-play");
+  const panel = document.querySelector(".call-panel").getBoundingClientRect();
+  return {
+    tag: button.tagName,
+    label: button.textContent,
+    panelPlaying: !document.querySelector(".call-panel audio").paused,
+    hearPlaying: !document.querySelector("#ouca audio").paused,
+    panelVisible: panel.top >= 0 && panel.bottom <= innerHeight,
+    scrollY: Math.round(scrollY),
+    hash: location.hash,
+  };
+})()`;
+
+for (const [width, height, lang, play, pause] of [
+  [1280, 900, "pt", pt.hero.secondary, pt.hero.secondaryPause],
+  [375, 812, "en", en.hero.secondary, en.hero.secondaryPause],
+]) {
+  test(`"${play}" toca e pausa o áudio do painel no lugar (${width}×${height})`, { skip }, async () => {
+    const page = await browser.newPage({ width, height });
+    await page.goto(`${base}${lang === "en" ? "/en/" : "/"}`);
+    let s = await page.evaluate(HERO_STATE);
+    assert.equal(s.tag, "BUTTON", "com JavaScript o link vira botão");
+    assert.equal(s.label, play);
+    assert.equal(s.panelVisible, width > 980, "no celular o painel começa fora da tela");
+
+    await page.evaluate(`document.querySelector(".hero-play").click()`);
+    await page.evaluate(`new Promise((r) => setTimeout(r, 900))`);
+    s = await page.evaluate(HERO_STATE);
+    assert.equal(s.panelPlaying, true);
+    assert.equal(s.hearPlaying, false);
+    assert.equal(s.label, pause);
+    assert.equal(s.panelVisible, true, "o painel fica inteiro na tela");
+    assert.equal(s.hash, "", "não vai para a seção Ouça o Bruno");
+    assert.equal(await page.evaluate(`getComputedStyle(document.querySelector(".wave span")).animationPlayState`), "running");
+
+    await page.evaluate(`document.querySelector(".hero-play").click()`);
+    s = await page.evaluate(HERO_STATE);
+    assert.equal(s.panelPlaying, false);
+    assert.equal(s.label, play);
+
+    // O botão acompanha o player do próprio painel.
+    await page.evaluate(`document.querySelector(".call-panel .audio-toggle").click()`);
+    await page.evaluate(`new Promise((r) => setTimeout(r, 200))`);
+    assert.equal((await page.evaluate(HERO_STATE)).label, pause);
+    await page.close();
+  });
+}
+
+test("Com reduzir movimento, o botão da abertura rola até o painel sem animação", { skip }, async () => {
+  const page = await browser.newPage({ width: 375, height: 812, reducedMotion: true });
+  await page.goto(`${base}/`);
+  const before = await page.evaluate(HERO_STATE);
+  const after = await page.evaluate(`(() => { document.querySelector(".hero-play").click(); return ${HERO_STATE}; })()`);
+  assert.equal(before.scrollY, 0);
+  assert.equal(after.panelVisible, true, "já no lugar logo depois do clique");
+  assert.equal(await page.evaluate(`getComputedStyle(document.querySelector(".wave span")).animationName`), "none");
+  await page.close();
+});
+
+// Mesma tabela da especificação: passo -> caixas acesas.
+const FLOW = { 1: ["cliente"], 2: ["triagem"], 3: ["kb"], 4: ["registro", "resolve"], 5: ["humano", "registro"] };
+
+for (const [width, height] of [
+  [375, 812],
+  [390, 844],
+  [1280, 800],
+]) {
+  test(`Fluxograma acende as caixas certas, em ordem, rolando a ${width}×${height}`, { skip }, async () => {
+    const page = await browser.newPage({ width, height });
+    await page.goto(`${base}/`);
+    const [start, end] = await page.evaluate(`(() => {
+      const grid = document.querySelector(".how-grid").getBoundingClientRect();
+      return [Math.round(grid.top + scrollY - innerHeight), Math.round(grid.bottom + scrollY)];
+    })()`);
+    const order = [];
+    let sawStuck = false;
+    for (let y = start; y <= end; y += 20) {
+      await page.scrollTo(y);
+      const { active, lit, coveredBy, cutAtBottom, wholeAbove, stuck, shadow } = await page.evaluate(`(() => {
+        const flow = document.querySelector(".how-flow").getBoundingClientRect();
+        const steps = [...document.querySelectorAll(".how-step")];
+        const step = document.querySelector(".how-step.is-active");
+        const box = step.getBoundingClientRect();
+        const stuck = getComputedStyle(document.querySelector(".how-flow")).position === "sticky" && flow.top >= 0 && flow.top < 2 && ${width} <= 980;
+        const whole = (el) => { const b = el.getBoundingClientRect(); return b.top >= flow.bottom - 1 && b.bottom <= innerHeight + 1; };
+        return {
+          active: Number(step.dataset.step),
+          lit: [...new Set([...document.querySelectorAll(".flow-node.is-lit")].map((n) => n.dataset.node))].sort(),
+          // 1 px de folga para as frações de pixel, a mesma do main.js.
+          coveredBy: stuck ? Math.max(0, flow.bottom - 1 - box.top) : 0,
+          cutAtBottom: stuck ? Math.max(0, box.bottom - innerHeight - 1) : 0,
+          wholeAbove: stuck ? steps.slice(0, steps.indexOf(step)).filter(whole).length : 0,
+          stuck,
+          shadow: document.querySelector(".how-flow").classList.contains("is-stuck"),
+        };
+      })()`);
+      assert.deepEqual(lit, FLOW[active], `y=${y}, passo ${active}`);
+      assert.equal(coveredBy, 0, `y=${y}: o passo ${active} aceso está embaixo do fluxograma`);
+      assert.equal(cutAtBottom, 0, `y=${y}: o passo ${active} aceso não cabe inteiro na tela`);
+      assert.equal(wholeAbove, 0, `y=${y}: há um passo inteiro entre o fluxograma e o passo aceso`);
+      assert.equal(shadow, stuck, `y=${y}: sombra ${shadow ? "sem" : "faltando com"} o fluxograma fixo`);
+      if (order.at(-1) !== active) order.push(active);
+      sawStuck ||= stuck;
+    }
+    assert.deepEqual(order, [1, 2, 3, 4, 5]);
+    if (width <= 980) assert.ok(sawStuck, "o fluxograma chegou a ficar fixo");
+    await page.close();
+  });
+}

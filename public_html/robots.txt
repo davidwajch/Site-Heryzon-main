@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://heryzon.com.br/sitemap.xml
