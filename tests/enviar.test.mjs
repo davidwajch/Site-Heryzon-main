@@ -11,7 +11,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const SITE = path.join(path.dirname(path.dirname(fileURLToPath(import.meta.url))), "public_html");
 const localPhp = spawnSync("which", ["php"], { encoding: "utf8" }).stdout?.trim();
 const dockerImage = process.env.PHP_DOCKER_IMAGE;
 const skip = localPhp || dockerImage ? false : "PHP não encontrado (instale o php ou defina PHP_DOCKER_IMAGE)";
@@ -36,10 +36,10 @@ before(async () => {
   url = `http://127.0.0.1:${port}/enviar.php`;
   const settings = (dir) => ["-d", `sys_temp_dir=${dir}`, "-d", `sendmail_path=cat >> ${dir}/mail.txt #`];
   proc = localPhp
-    ? spawn(localPhp, ["-S", `127.0.0.1:${port}`, "-t", ROOT, ...settings(dataDir)], { stdio: "ignore" })
+    ? spawn(localPhp, ["-S", `127.0.0.1:${port}`, "-t", SITE, ...settings(dataDir)], { stdio: "ignore" })
     : spawn(
         "docker",
-        ["run", "--rm", "--name", containerName, "-v", `${ROOT}:/app:ro`, "-v", `${dataDir}:/data`, "-p", `127.0.0.1:${port}:8000`, dockerImage, "php", "-S", "0.0.0.0:8000", "-t", "/app", ...settings("/data")],
+        ["run", "--rm", "--name", containerName, "-v", `${SITE}:/app:ro`, "-v", `${dataDir}:/data`, "-p", `127.0.0.1:${port}:8000`, dockerImage, "php", "-S", "0.0.0.0:8000", "-t", "/app", ...settings("/data")],
         { stdio: "ignore" },
       );
   for (let i = 0; i < 300; i++) {

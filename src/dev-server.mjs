@@ -1,4 +1,4 @@
-// Servidor local para testar o site sem PHP.
+// Servidor local para testar o site sem PHP, servindo a pasta public_html/.
 // POST /enviar.php é simulado: responde sucesso, erro 500 com FORM_MOCK=error
 // ou limite de envios (429) com FORM_MOCK=limit.
 // Uso: npm run dev   (ou FORM_MOCK=error npm run dev)
@@ -8,7 +8,7 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const SITE = path.join(path.dirname(path.dirname(fileURLToPath(import.meta.url))), "public_html");
 const TYPES = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -30,7 +30,7 @@ async function resolveFile(root, urlPath) {
 
 // Nos testes de navegador: roots põe na frente a pasta com as páginas recém-geradas,
 // e onForm recebe o corpo bruto de cada envio do formulário.
-export function createDevServer({ roots = [ROOT], formMock = process.env.FORM_MOCK, formDelay = 800, onForm } = {}) {
+export function createDevServer({ roots = [SITE], formMock = process.env.FORM_MOCK, formDelay = 800, onForm } = {}) {
   return createServer(async (req, res) => {
     const { pathname, search } = new URL(req.url, "http://localhost");
 

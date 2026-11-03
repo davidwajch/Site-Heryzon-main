@@ -5,14 +5,12 @@ import assert from "node:assert/strict";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { buildSite } from "../src/build.mjs";
+import { SITE, buildSite } from "../src/build.mjs";
 import { createDevServer } from "../src/dev-server.mjs";
 import { chromePath, launchBrowser } from "./lib/browser.mjs";
 import pt from "../src/content/pt.mjs";
 import en from "../src/content/en.mjs";
 
-const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const skip = chromePath ? false : "Chrome não encontrado (defina CHROME_PATH para rodar)";
 
 let out;
@@ -25,7 +23,7 @@ before(async () => {
   if (skip) return;
   out = await mkdtemp(path.join(tmpdir(), "heryzon-site-"));
   await buildSite(out);
-  server = createDevServer({ roots: [out, ROOT], formMock: "", formDelay: 0, onForm: (body) => forms.push(body) });
+  server = createDevServer({ roots: [out, SITE], formMock: "", formDelay: 0, onForm: (body) => forms.push(body) });
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   base = `http://127.0.0.1:${server.address().port}`;
   browser = await launchBrowser();

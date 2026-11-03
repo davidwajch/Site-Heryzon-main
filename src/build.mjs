@@ -1,4 +1,4 @@
-// Gera as páginas estáticas do site (PT e EN) na raiz do repositório.
+// Gera as páginas estáticas do site (PT e EN) em public_html/, a pasta que vai para o servidor.
 // Uso: node src/build.mjs
 
 import { createHash } from "node:crypto";
@@ -13,6 +13,7 @@ import { privacy } from "./templates/privacy.mjs";
 
 const SRC = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.dirname(SRC);
+export const SITE = path.join(ROOT, "public_html");
 
 // Dados cadastrais da política de privacidade. Enquanto um valor for null,
 // o campo entre colchetes continua visível na página.
@@ -46,11 +47,11 @@ function fillCompany(markdown, lang) {
 
 // Versão de CSS/JS pelo conteúdo, para o cache longo do .htaccess não servir arquivo velho.
 async function assetVersion(file) {
-  const data = await readFile(path.join(ROOT, "assets", file));
+  const data = await readFile(path.join(SITE, "assets", file));
   return createHash("sha256").update(data).digest("hex").slice(0, 10);
 }
 
-export async function buildSite(outDir = ROOT) {
+export async function buildSite(outDir = SITE) {
   const assets = { css: await assetVersion("styles.css"), js: await assetVersion("main.js") };
   const homeAlternates = { pt: pt.paths.home, en: en.paths.home };
   const privacyAlternates = { pt: pt.paths.privacy, en: en.paths.privacy };

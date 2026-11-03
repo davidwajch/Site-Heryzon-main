@@ -7,7 +7,8 @@ RewriteEngine On
 # Páginas antigas: a política nova fica em /privacidade/; termos e cookies deixaram de existir.
 RewriteRule ^(privacidade|termos|cookies)\.html$ /privacidade/ [R=301,L]
 
-# Código-fonte e arquivos de trabalho não são servidos.
+# Proteção extra: o código-fonte e os arquivos de trabalho ficam fora de public_html/,
+# mas, se algum for enviado por engano, não é servido.
 RewriteRule ^(src|tests|docs|node_modules)(/|$) - [F,L]
 RewriteRule ^(README\.md|package\.json|\.git.*)$ - [F,L]
 </IfModule>
